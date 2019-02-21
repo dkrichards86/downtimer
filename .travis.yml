@@ -1,36 +1,33 @@
 language: node_js
 node_js:
-  - "8.12.0"
+- 8.12.0
 cache:
   yarn: true
   directories:
   - node_modules
-
 stages:
-  - test
-  - name: deploy
-    if: branch = master
-
+- test
+- name: deploy
+  if: branch = master
 jobs:
   include:
-    - stage: test
-      script:
-        - npm run lint
-        - npm run test:unit
-
-    - stage: deploy
-      script:
-        - npm run build
-      deploy:
-          provider: s3
-          access_key_id:
-            secure: "BdzRZ+6/9gU0D4vhLxjMQsELBXAMpOmHGh5/wOSkKKMhddLKWMOVeHg2JE7XO2mzq2WWPOcrVmV33yFhC476uF+HM1+PueUUFhchHT25HxytRTEYY0Mao+N4q3abwh0ATEBe3USVCYowarUUl/LBVlVgr3/SNFBx0vQtOnSH3bPPMs7AkTIvqJVQI01vJMusYsO6bMqYEYf1rly8+28WPdlqxYzE28xPBQTE8ihgxGXf+CzFeaTjNgARGENavu1cazYq6/Efe1oB8eEQhn/GQ5fAwheggoslxje5bVxX+3k9MPInBJ2orthLaPNoR+w9Do5dQXcu6bXK8ci0gqd7RiazekiW77wl1lAGOVeEDcurZ3hSlQzEzu+yF2nDb2bMcSuVdwZ0DAiOiBuNlTmCLezssw8PgzkoRqIH4n5PtwDVVr3Q+vOA7p1a30X6RurI1I8YnffhdqH3qe+0Ip0kllbikIFmzwCbhkrlEnuvF27y2Bsv1rvfXYMuqNHoUDQBmjJCDzUOkKEEIVOwEii3e2vFPIQQYh7QVhNwrquWJefntH1fnuqWk0gwwSkWjO2lGX8oA1GuxJvW2ovAjCILAZUdOO2RORiOBMMp6tsyyEoCKPWvjJi00Ks2/aslIGEQnyu7fMr4TGb+XQLNyj0NbqxpmRr+okYHIDFqrxR+5Lw="
-          secret_access_key:
-            secure: "Ce4dkgdehJaXDk53uVm+1DIcbqNmwwoE54xUbFtgU0KEL/NI7lfc3e6y3JnsSOadUiglD6X4wN1nyLkXw6Yswjr8lcQ8tYBtYy9rMQlDV+Wn3jzNYFz78g9Vw/kLZjSxd6AZax4GyZfQo2MRvVpivp4RCBIAXNF6FUCY5b03avpd4ddKrXZD5UVk37BSaEKeaKnigbc9T1mjEp3pYwsmiB3aGgWCCqP9gIJKr8ErMKbvweCqN5zq0GoszY4T6diOLaf+W9t0fYnxHuqxv0QNPTen67i9FVXj/O9ceH1vxInRER8XyY3hxSjyPhgQWUhSWt7Rfkw+qUX61lyPSWKYKyEK+kBzDFr4d33xCVt5511B84TeC0YaDiJEWh9I9+obUCMOaOjXb1aToC4Xe33B62HzXzzFvjDs1f6ZJb3wOzm2Yay6SpDWIv+4bKHVgN8wPxetuM/5waCS37itZrrunKOOu2caFGgeTXw7HFfShJTrCgzrR15CrtsYbu2DI5teG/k1i80C+SwyzCMYCAtAWnlVzifSVtdEB0X6fO9SSkwCpi2lUZYsrbl7ewYnYNislJ1z+S10DFXQDXNfkxmute2pF0dh+30vc1+MCoMKqRJfzkQhOYsGiTg/WTpl5bTfcMNOr7gWNmrd46qM0WGLkftjnYgSqacxRcfZjeP7Abc="
-          bucket: downtimer.io
-          region: us-east-1
-          acl: public_read
-          local_dir: dist
-          skip_cleanup: true
-          on:
-            branch: master
+  - stage: test
+    script:
+    - npm run lint
+    - npm run test:unit
+  - stage: deploy
+    script:
+    - npm run build
+    deploy:
+      provider: s3
+      access_key_id:
+        secure: o30igc8uEPlu3ytA3TFc4tSuZ5gWaTl1RW16n0eR2tyfiBBSMf4m+EED8xJqju+QM5mXebK13nwlXWVSSpOQhiqKrnNvMCjCQK04oyVQIO4NiiB5NmvM+YBXYFHFhOfSOgGaq+vxMxFi7T3lDyHkuOIFGOT2xjZ+R06k9vkdPuizvW7pFVc91xuBV8jtaJwP5mqctrZCTH09eu75TEFCXsvAuHYYthH1FR7yW5ygQx1ENopQ0PMGRj6AOcigWTYtc4KkPcKj5a/SHYFjQf1l+t5dbsAFb4xISvZ0owe6jAg9evjqIatv6cdOaLBgqadT5mRGKgrh2yI8EXHx7UpjfRCsaXId9qEzryRo3fkkP6kQFeto8gQSd//SG2uroa1NDl1abE9lOh+9SftJv++Z/wObHnIiEGJ4Xb+MQT+EpEdHcweztxx0igOffWbXkicJ7N76mrOgAkAezP6CKz+jzkFZQgJbP1fvfHDnq5banSO0NyLibP4KgBI6cAksP+z0p8/cAeJalWr/NfpZPu1hK2X19ZpX6+1OdZaUR3ANHQrkfK81F85cXW9h92YDLHKEN/FTR8cLQZupDaKlY3m4fS7etwRsoCSoqQrVmhEl6NSu1zlKb0jba78SsVBynmhqfL2oCnuJuqjARDYW+2WbHXzPJAA8bCmrdbNIWQVbzRE=
+      secret_access_key:
+        secure: Fjis093uEWi4LWi4ntxyiXI8rwPehjNDcbjotVBMTzy5iquMRN7VewNzuLFT+iEYfGAy2+zScqTPm//j8R1eFpmvhK7LB0mgaNC7iNRss1JT0HzlHEo0mAsNv7qx4VNbCkVFE2rPFuSL8K0qgnKFLPXfsKAxrpKSyPJHU/bUCrUiKx9SIhPxjhl4P6f7HcDtiZg23FHUZ8O3izh7Z9pqElG4fZ+9rI6bv04TtsDByiRtEdigjOCD0hzNGt+M58C2PDxYuXJPkXJeELfr1HrSgC5lM3o1yoeyNFuxhhZoAbAnNQXF2oYe+snMLNixkgTgZLAu+LOUJLX83PWNBko5XgolXZxhA49Fdezzb1Sqj3KmVY1U6FWGxHzEgNgJ92lk2x8ssjnoIHapRHR4foqskXGZYlxbHuWdV3R5KkUZVSEt+2VqK84HVKKAZWHctBoLE97PnCZUuSiCBny23N1MucZc4tt/dpSCSz8RQ5If4o38GR8pmM+ZtP3/eo34FafGdhHiCe+JusI9pL0hai/jR0HtE6ikYKbSXDevOkCt6/dWxWGcemCecyQmXdTbZY5NTTqeOpP68o2KwnE0k6JNpYKS6G92ER181T8gItmdEDXtYun1r6VI8EPL3j132/K7IPSp/bD+GDGzS2AVPDUxB1xU/DxQEdqPgp2JwHl0DBA=
+      bucket: downtimer.io
+      region: us-east-1
+      acl: public_read
+      local_dir: dist
+      skip_cleanup: true
+      on:
+        branch: master

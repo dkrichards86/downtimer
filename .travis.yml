@@ -1,16 +1,14 @@
 language: node_js
 node_js:
-  - "8.12.0"
+- 8.12.0
 cache:
   yarn: true
   directories:
   - node_modules
-
 stages:
-  - test
-  - name: deploy
-    if: branch = master
-
+- test
+- name: deploy
+  if: branch = master
 jobs:
   include:
     - stage: test
@@ -24,9 +22,9 @@ jobs:
       deploy:
           provider: s3
           access_key_id:
-            secure: "BdzRZ+6/9gU0D4vhLxjMQsELBXAMpOmHGh5/wOSkKKMhddLKWMOVeHg2JE7XO2mzq2WWPOcrVmV33yFhC476uF+HM1+PueUUFhchHT25HxytRTEYY0Mao+N4q3abwh0ATEBe3USVCYowarUUl/LBVlVgr3/SNFBx0vQtOnSH3bPPMs7AkTIvqJVQI01vJMusYsO6bMqYEYf1rly8+28WPdlqxYzE28xPBQTE8ihgxGXf+CzFeaTjNgARGENavu1cazYq6/Efe1oB8eEQhn/GQ5fAwheggoslxje5bVxX+3k9MPInBJ2orthLaPNoR+w9Do5dQXcu6bXK8ci0gqd7RiazekiW77wl1lAGOVeEDcurZ3hSlQzEzu+yF2nDb2bMcSuVdwZ0DAiOiBuNlTmCLezssw8PgzkoRqIH4n5PtwDVVr3Q+vOA7p1a30X6RurI1I8YnffhdqH3qe+0Ip0kllbikIFmzwCbhkrlEnuvF27y2Bsv1rvfXYMuqNHoUDQBmjJCDzUOkKEEIVOwEii3e2vFPIQQYh7QVhNwrquWJefntH1fnuqWk0gwwSkWjO2lGX8oA1GuxJvW2ovAjCILAZUdOO2RORiOBMMp6tsyyEoCKPWvjJi00Ks2/aslIGEQnyu7fMr4TGb+XQLNyj0NbqxpmRr+okYHIDFqrxR+5Lw="
+            secure: zdfgA2qh3Tn20Uq3CeqJXLzo9Lnf0dMG3t7LUPJR1mDrWgOEbINi9z0wgU+6Ld9xwcZv8KOzKFRHvMUe6e7w9AlCHvp1VUy1cA2FmJtfu06Wv0nxfozLoHkFcD3Ss1OBaKg09fAvCHxkY87Db0yhPoNoq72SKPTZIc2PxXTYkgadMmx3dAnsddX5qV7ACrnOSZh1NlYk1yuWZVRwrRKl7o0ouIaMYS/XhUQLYV9zUSVADLhwVpcba56YBZQcu6frWTLZTXEFWrKOCsb+jVf52kj2r/CerTen0VDZsnHlvLm8DrHz/0M8I6mdlNxooRSaYx6zuPb+BQzjBh++GQSbdNu9vnljCy3L2jc17qvrrbnPtLTHUEoGx6Prqyda+V/m75MJW6b5fM5j0IzpBKM4yfSVoXnwSsfmw0Q0lPSHLLqGQYCxknFTS4EJ2akV0Azg6Sa1nuQ6/CvVylRAcK3WFevMqBDczxAeB95MrgeVquZH34RLTUVTLW83T/tQfUVDWyI0I/WdFYgH3QwU28ORLpqHNxGRWHn4HT+ZZu/PZLQy9jKdINZa5H+zZxAePyx5ZdzqO0pT5BvY1k3+3f7F18O5ktOUvrks4wMo7ERFTIwnrLNp9kRvirHJef1D1aVJF/dVRxYMlKJKkkB1yH1WZJvNTY1jn6CBi5zACTN/h74=
           secret_access_key:
-            secure: "Ce4dkgdehJaXDk53uVm+1DIcbqNmwwoE54xUbFtgU0KEL/NI7lfc3e6y3JnsSOadUiglD6X4wN1nyLkXw6Yswjr8lcQ8tYBtYy9rMQlDV+Wn3jzNYFz78g9Vw/kLZjSxd6AZax4GyZfQo2MRvVpivp4RCBIAXNF6FUCY5b03avpd4ddKrXZD5UVk37BSaEKeaKnigbc9T1mjEp3pYwsmiB3aGgWCCqP9gIJKr8ErMKbvweCqN5zq0GoszY4T6diOLaf+W9t0fYnxHuqxv0QNPTen67i9FVXj/O9ceH1vxInRER8XyY3hxSjyPhgQWUhSWt7Rfkw+qUX61lyPSWKYKyEK+kBzDFr4d33xCVt5511B84TeC0YaDiJEWh9I9+obUCMOaOjXb1aToC4Xe33B62HzXzzFvjDs1f6ZJb3wOzm2Yay6SpDWIv+4bKHVgN8wPxetuM/5waCS37itZrrunKOOu2caFGgeTXw7HFfShJTrCgzrR15CrtsYbu2DI5teG/k1i80C+SwyzCMYCAtAWnlVzifSVtdEB0X6fO9SSkwCpi2lUZYsrbl7ewYnYNislJ1z+S10DFXQDXNfkxmute2pF0dh+30vc1+MCoMKqRJfzkQhOYsGiTg/WTpl5bTfcMNOr7gWNmrd46qM0WGLkftjnYgSqacxRcfZjeP7Abc="
+            secure: FuU7NG3dwyOlDb60CixnxtvnwNZ3yrf6T0WS3kkOnzgB3BnxdkQwm9oYOqazWl4YtM0qvqvzF+lc83/S4Wvhnr1UAeWNyBjj9ej5bo0RBARlO3pj3C2R0jvpcfcSe85u3acTrYVe2WGoOPRv00N8oi5WNj9RCGKj+Z0K+LiefZCTCvfa95NDxWm+v7d6Pu0ZLI4yMHJxNi1XDsneeLdy1HSOq/i70pbYLIHwXxtUQSWN8MFgiAjW1wZdQrwiJoFwqG6keGw7AqtI8qDOqyWko1qWU0InniXUzH4T+E1L7dO780BAnWBxvxvvAJAClZ+Srb4ZaM2eWKyL1hDrExbk8ejTxL+cafJJGr0YoXDq+u4vGgVodWXcpJRW9HbDma+dGA2XAudOlrg4NsVmHlG1hwpEpocO97IbXYwB+O4Q+BWRxgqwScqqMfP+t2SF5NdVEOR9njqaRD165bPalFmr4+vE8ND2Co7xmJOle4/C5SdWJ/BxwX4DYogmbSFb+o6TsYAP6UkePMLNGWX+KlNRGW4K6VwL5mMvti7l4Y3kr+LiVKvA5WYwF2A1okEtQGJ9EXE3N8D3sEFan+gpgnbq6r8iENJmw0ajZXNqSIaDPj+VvWs9UwU0Uo4Qurr+pgGr78R09KVMPEJ7xvy+iiTB9hTX4T91mkkYCxF6w5DWyag=
           bucket: downtimer.io
           region: us-east-1
           acl: public_read

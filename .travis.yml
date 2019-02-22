@@ -11,23 +11,24 @@ stages:
   if: branch = master
 jobs:
   include:
-  - stage: test
-    script:
-    - npm run lint
-    - npm run test:unit
-  - stage: deploy
-    script:
-    - npm run build
-    deploy:
-      provider: s3
-      access_key_id:
-        secure: o30igc8uEPlu3ytA3TFc4tSuZ5gWaTl1RW16n0eR2tyfiBBSMf4m+EED8xJqju+QM5mXebK13nwlXWVSSpOQhiqKrnNvMCjCQK04oyVQIO4NiiB5NmvM+YBXYFHFhOfSOgGaq+vxMxFi7T3lDyHkuOIFGOT2xjZ+R06k9vkdPuizvW7pFVc91xuBV8jtaJwP5mqctrZCTH09eu75TEFCXsvAuHYYthH1FR7yW5ygQx1ENopQ0PMGRj6AOcigWTYtc4KkPcKj5a/SHYFjQf1l+t5dbsAFb4xISvZ0owe6jAg9evjqIatv6cdOaLBgqadT5mRGKgrh2yI8EXHx7UpjfRCsaXId9qEzryRo3fkkP6kQFeto8gQSd//SG2uroa1NDl1abE9lOh+9SftJv++Z/wObHnIiEGJ4Xb+MQT+EpEdHcweztxx0igOffWbXkicJ7N76mrOgAkAezP6CKz+jzkFZQgJbP1fvfHDnq5banSO0NyLibP4KgBI6cAksP+z0p8/cAeJalWr/NfpZPu1hK2X19ZpX6+1OdZaUR3ANHQrkfK81F85cXW9h92YDLHKEN/FTR8cLQZupDaKlY3m4fS7etwRsoCSoqQrVmhEl6NSu1zlKb0jba78SsVBynmhqfL2oCnuJuqjARDYW+2WbHXzPJAA8bCmrdbNIWQVbzRE=
-      secret_access_key:
-        secure: Fjis093uEWi4LWi4ntxyiXI8rwPehjNDcbjotVBMTzy5iquMRN7VewNzuLFT+iEYfGAy2+zScqTPm//j8R1eFpmvhK7LB0mgaNC7iNRss1JT0HzlHEo0mAsNv7qx4VNbCkVFE2rPFuSL8K0qgnKFLPXfsKAxrpKSyPJHU/bUCrUiKx9SIhPxjhl4P6f7HcDtiZg23FHUZ8O3izh7Z9pqElG4fZ+9rI6bv04TtsDByiRtEdigjOCD0hzNGt+M58C2PDxYuXJPkXJeELfr1HrSgC5lM3o1yoeyNFuxhhZoAbAnNQXF2oYe+snMLNixkgTgZLAu+LOUJLX83PWNBko5XgolXZxhA49Fdezzb1Sqj3KmVY1U6FWGxHzEgNgJ92lk2x8ssjnoIHapRHR4foqskXGZYlxbHuWdV3R5KkUZVSEt+2VqK84HVKKAZWHctBoLE97PnCZUuSiCBny23N1MucZc4tt/dpSCSz8RQ5If4o38GR8pmM+ZtP3/eo34FafGdhHiCe+JusI9pL0hai/jR0HtE6ikYKbSXDevOkCt6/dWxWGcemCecyQmXdTbZY5NTTqeOpP68o2KwnE0k6JNpYKS6G92ER181T8gItmdEDXtYun1r6VI8EPL3j132/K7IPSp/bD+GDGzS2AVPDUxB1xU/DxQEdqPgp2JwHl0DBA=
-      bucket: downtimer.io
-      region: us-east-1
-      acl: public_read
-      local_dir: dist
-      skip_cleanup: true
-      on:
-        branch: master
+    - stage: test
+      script:
+        - npm run lint
+        - npm run test:unit
+
+    - stage: deploy
+      script:
+        - npm run build
+      deploy:
+          provider: s3
+          access_key_id:
+            secure: zdfgA2qh3Tn20Uq3CeqJXLzo9Lnf0dMG3t7LUPJR1mDrWgOEbINi9z0wgU+6Ld9xwcZv8KOzKFRHvMUe6e7w9AlCHvp1VUy1cA2FmJtfu06Wv0nxfozLoHkFcD3Ss1OBaKg09fAvCHxkY87Db0yhPoNoq72SKPTZIc2PxXTYkgadMmx3dAnsddX5qV7ACrnOSZh1NlYk1yuWZVRwrRKl7o0ouIaMYS/XhUQLYV9zUSVADLhwVpcba56YBZQcu6frWTLZTXEFWrKOCsb+jVf52kj2r/CerTen0VDZsnHlvLm8DrHz/0M8I6mdlNxooRSaYx6zuPb+BQzjBh++GQSbdNu9vnljCy3L2jc17qvrrbnPtLTHUEoGx6Prqyda+V/m75MJW6b5fM5j0IzpBKM4yfSVoXnwSsfmw0Q0lPSHLLqGQYCxknFTS4EJ2akV0Azg6Sa1nuQ6/CvVylRAcK3WFevMqBDczxAeB95MrgeVquZH34RLTUVTLW83T/tQfUVDWyI0I/WdFYgH3QwU28ORLpqHNxGRWHn4HT+ZZu/PZLQy9jKdINZa5H+zZxAePyx5ZdzqO0pT5BvY1k3+3f7F18O5ktOUvrks4wMo7ERFTIwnrLNp9kRvirHJef1D1aVJF/dVRxYMlKJKkkB1yH1WZJvNTY1jn6CBi5zACTN/h74=
+          secret_access_key:
+            secure: FuU7NG3dwyOlDb60CixnxtvnwNZ3yrf6T0WS3kkOnzgB3BnxdkQwm9oYOqazWl4YtM0qvqvzF+lc83/S4Wvhnr1UAeWNyBjj9ej5bo0RBARlO3pj3C2R0jvpcfcSe85u3acTrYVe2WGoOPRv00N8oi5WNj9RCGKj+Z0K+LiefZCTCvfa95NDxWm+v7d6Pu0ZLI4yMHJxNi1XDsneeLdy1HSOq/i70pbYLIHwXxtUQSWN8MFgiAjW1wZdQrwiJoFwqG6keGw7AqtI8qDOqyWko1qWU0InniXUzH4T+E1L7dO780BAnWBxvxvvAJAClZ+Srb4ZaM2eWKyL1hDrExbk8ejTxL+cafJJGr0YoXDq+u4vGgVodWXcpJRW9HbDma+dGA2XAudOlrg4NsVmHlG1hwpEpocO97IbXYwB+O4Q+BWRxgqwScqqMfP+t2SF5NdVEOR9njqaRD165bPalFmr4+vE8ND2Co7xmJOle4/C5SdWJ/BxwX4DYogmbSFb+o6TsYAP6UkePMLNGWX+KlNRGW4K6VwL5mMvti7l4Y3kr+LiVKvA5WYwF2A1okEtQGJ9EXE3N8D3sEFan+gpgnbq6r8iENJmw0ajZXNqSIaDPj+VvWs9UwU0Uo4Qurr+pgGr78R09KVMPEJ7xvy+iiTB9hTX4T91mkkYCxF6w5DWyag=
+          bucket: downtimer.io
+          region: us-east-1
+          acl: public_read
+          local_dir: dist
+          skip_cleanup: true
+          on:
+            branch: master

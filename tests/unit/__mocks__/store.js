@@ -1,4 +1,3 @@
-import Vuex from 'vuex';
 import sinon from 'sinon';
 import find from 'lodash/find';
 
@@ -19,12 +18,10 @@ export const state = {
       duration: 1200
     }
   ],
-  history: [],
   chime: 'arpeggio',
   play_chime: false,  
   timer_status: -1,
   timer_value: 0,
-  stats_interruptions: false,
   stats_window: 14
 };
 
@@ -33,7 +30,6 @@ export const actions = {
   setAutoplay: sinon.stub(),
   setCycle: sinon.stub(),
   setPlayChime: sinon.stub(),
-  setStatsInterruptions: sinon.stub(),
   setStatsWindow: sinon.stub(),
   setChime: sinon.stub(),
   hydrateTimers: sinon.stub(),
@@ -42,7 +38,6 @@ export const actions = {
   removeTimer: sinon.stub(),
   setTimers: sinon.stub(),
   updateTimers: sinon.stub(),
-  updateHistory: sinon.stub(),
   setTimerStatus: sinon.stub(),
   updateTimerValue: sinon.stub(),
   initTimer: sinon.stub(),
@@ -57,7 +52,6 @@ export const getters = {
   getActiveTimer: state => state.active_timer,
   getAutoplay: state => state.autoplay,
   getPlaySource: state => state.play_source,
-  getHistory: state => state.history,
   getCycle: state => state.cycle,
   getPlayChime: state => state.play_chime,
   getChime: state => state.chime,
@@ -65,6 +59,5 @@ export const getters = {
   getTimers: state => state.timers,
   getTimerStatus: state => state.timer_status,
   getTimerValue: state => state.timer_value,
-  getStatsInterruptions: state => state.stats_interruptions,
   getStatsWindow: state => state.stats_window
 };

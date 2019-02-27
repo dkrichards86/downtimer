@@ -20,7 +20,6 @@ describe('utils/timer', () => {
     expect(timer._previousTime).to.equal(0);
     expect(timer._timer).to.be.null;
     expect(timer._running).to.be.false;
-    expect(timer._updateCounter).to.equal(0);
   });
 
   it('should set a duration', () => {
@@ -80,7 +79,6 @@ describe('utils/timer', () => {
         expect(tickCB).to.be.called;
         expect(timer._previousTime).to.exist;
         expect(timer.timeRemaining).to.be.below(timer.initialDuration);
-        expect(timer._updateCounter).to.be.above(0);
         done();
       }
       catch(err) {
@@ -105,7 +103,6 @@ describe('utils/timer', () => {
         expect(timer._running).to.be.false;
         expect(timer._timer).to.be.null;
 
-        expect(timer._updateCounter).to.equal(0);
         expect(timer.timeRemaining).to.equal(0);
         done();
       }

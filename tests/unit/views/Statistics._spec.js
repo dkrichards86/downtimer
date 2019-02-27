@@ -4,8 +4,12 @@ import Vuetify from 'vuetify';
 import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
 import Statistics from '@/views/Statistics';
+import StatisticsTimers from '@/components/StatisticsTimers';
+import StatisticsCompletionPercents from '@/components/StatisticsCompletionPercents';
+import StatisticsDailyInterruptions from '@/components/StatisticsDailyInterruptions';
+import StatisticsMeanInterruptions from '@/components/StatisticsMeanInterruptions';
 import StatisticsControls from '@/components/StatisticsControls';
-import StatisticsChart from '@/components/StatisticsChart';
+
 import { state, actions, getters } from '../__mocks__/store';
 
 const { expect } = chai;
@@ -36,8 +40,20 @@ describe('Statistics.vue', () => {
       expect(wrapper.findAll(StatisticsControls).length).to.equal(1);
     });
     
-    it('should display statistics chart in v-card-text', () => {
-      expect(wrapper.findAll(StatisticsChart).length).to.equal(1);
+    it('should display timer statistics', () => {
+      expect(wrapper.findAll(StatisticsTimers).length).to.equal(1);
+    });
+    
+    it('should display completion stats', () => {
+      expect(wrapper.findAll(StatisticsCompletionPercents).length).to.equal(1);
+    });
+    
+    it('should display daily interuption stats', () => {
+      expect(wrapper.findAll(StatisticsDailyInterruptions).length).to.equal(1);
+    });
+    
+    it('should display average interruption stats', () => {
+      expect(wrapper.findAll(StatisticsMeanInterruptions).length).to.equal(1);
     });
   });
 });

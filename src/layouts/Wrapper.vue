@@ -1,12 +1,14 @@
 <template>
   <v-app>
-    <sidebar :drawer="drawer" />
     <v-toolbar dark app fixed clipped-left color="primary">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"/>
       <v-toolbar-title class="dt-title">
         DownTimer.io
       </v-toolbar-title>
     </v-toolbar>
+    <v-navigation-drawer v-model="drawer" app fixed clipped>
+      <sidebar />
+    </v-navigation-drawer>
     <v-content>
       <v-container>
         <v-layout>

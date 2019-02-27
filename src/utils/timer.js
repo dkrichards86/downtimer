@@ -18,8 +18,6 @@ export class Timer {
     this._previousTime = 0;
     this._timer = null;
     this._running = false;
-    this._updateCounter = 0;
-    this.runId = null;
 
     this.updateTime = this.updateTime.bind(this);
   }
@@ -41,13 +39,6 @@ export class Timer {
   setDuration(duration) {
     this.initialDuration = duration;
     this.timeRemaining = duration;
-  }
-
-  /**
-   * Set a run ID
-   */
-  setRunId(runId) {
-    this.runId = runId;
   }
 
   /**
@@ -96,7 +87,6 @@ export class Timer {
     const delta = currentTime - this._previousTime;
     this._previousTime = currentTime;
     this.timeRemaining -= delta;
-    this._updateCounter++;
 
     if (this.timeRemaining > 0) {
       this.tickCallback(this.timeRemaining);
@@ -104,7 +94,6 @@ export class Timer {
       this.stop();
       this.tickCallback(0);
       this.completionCallback();
-      this._updateCounter = 0;
       this.timeRemaining = 0;
     }
   }

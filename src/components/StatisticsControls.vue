@@ -1,11 +1,6 @@
 <template>
   <v-layout row wrap align-center class="px-2">
     <v-flex>
-      <v-checkbox
-        v-model="stops"
-        label="Show Interruptions" />
-    </v-flex>
-    <v-flex>
       <v-select
         v-model="timeWindow"
         :items="windows"

@@ -1,9 +1,6 @@
 {
   "name": "downtimer",
-  "version": "0.1.0",
   "private": true,
-  "description": "DownTimer.io, a browser based productivity timer.",
-  "author": "Keith Richards <dkrichards86@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

@@ -4,7 +4,6 @@ import {
   SET_ACTIVE_TIMER,
   SET_PLAY_SOURCE,
   SET_TIMERS,
-  SET_HISTORY,
   SET_TIMER_STATUS,
   UPDATE_TIMER_VALUE
 } from './mutation_types';
@@ -18,9 +17,6 @@ export const mutations = {
   },
   [SET_TIMERS](state, payload) {
     Vue.set(state, 'timers', payload);
-  },
-  [SET_HISTORY](state, payload) {
-    Vue.set(state, 'history', payload);
   },
   [SET_TIMER_STATUS](state, payload) {
     Vue.set(state, 'timer_status', payload);

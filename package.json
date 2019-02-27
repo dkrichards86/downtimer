@@ -1,9 +1,6 @@
 {
   "name": "downtimer",
-  "version": "0.1.0",
   "private": true,
-  "description": "DownTimer.io, a browser based productivity timer.",
-  "author": "Keith Richards <dkrichards86@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -13,9 +10,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.3",
+    "dexie": "^2.0.4",
     "http-server": "^0.11.1",
     "lodash": "^4.17.11",
     "moment": "2.21.0",
+    "promise-polyfill": "8.1.0",
     "push.js": "^1.0.9",
     "register-service-worker": "^1.6.1",
     "shortid": "^2.2.14",
@@ -37,6 +36,7 @@
     "@vue/test-utils": "^1.0.0-beta.29",
     "ajv": "^6.9.1",
     "babel-eslint": "^10.0.1",
+    "canvas": "^2.3.1",
     "chai": "^4.1.2",
     "eslint": "^5.14.0",
     "eslint-plugin-vue": "^5.2.1",

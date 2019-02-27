@@ -1,3 +1,5 @@
+import 'promise-polyfill/src/polyfill';
+
 import Vue from 'vue';
 import './plugins/vuetify';
 import Wrapper from './layouts/Wrapper.vue';

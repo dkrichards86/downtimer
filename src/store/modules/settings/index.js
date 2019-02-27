@@ -11,9 +11,6 @@ const state = {
   cycle: false,
   chime: 'arpeggio',
   play_chime: false,
-  stats_starts: true,
-  stats_completions: true,
-  stats_interruptions: false,
   stats_window: 14
 };
 

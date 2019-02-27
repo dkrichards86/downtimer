@@ -3,7 +3,6 @@ import {
   SET_CYCLE,
   SET_PLAY_CHIME,
   SET_CHIME,
-  SHOW_STATS_INTERRUPTIONS,
   SET_STATS_WINDOW
 } from './mutation_types';
 
@@ -33,11 +32,6 @@ export const actions = {
 
     saveSettings({ chime: payload });
   },
-  setStatsInterruptions(store, payload) {
-    store.commit(SHOW_STATS_INTERRUPTIONS, payload);
-
-    saveSettings({ stats_interruptions: payload });
-  },
   setStatsWindow(store, payload) {
     store.commit(SET_STATS_WINDOW, payload);
 
@@ -61,10 +55,6 @@ export const actions = {
 
       if ('chime' in settings) {
         store.commit(SET_CHIME, settings.chime);
-      }
-
-      if ('stats_interruptions' in settings) {
-        store.commit(SHOW_STATS_INTERRUPTIONS, settings.stats_interruptions);
       }
 
       if ('stats_window' in settings) {

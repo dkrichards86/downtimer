@@ -33,9 +33,5 @@ describe('StatisticsControls.vue', () => {
     it('should render a select field', () => {
       expect(wrapper.contains('v-select-stub')).to.equal(true);
     });
-
-    it('should render a checkboxes', () => {
-      expect(wrapper.findAll('v-checkbox-stub').length).to.equal(1);
-    });
   });
 });

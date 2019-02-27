@@ -15,7 +15,6 @@ const DEFAULT_TIMER = {
 
 const state = {
   active_timer: DEFAULT_TIMER.uid,
-  history: [],
   timers: [DEFAULT_TIMER],
   timer_status: -1,
   timer_value: DEFAULT_TIMER.duration

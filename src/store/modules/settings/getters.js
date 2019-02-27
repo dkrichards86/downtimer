@@ -3,6 +3,5 @@ export const getters = {
   getCycle: state => state.cycle,
   getChime: state => state.chime,
   getPlayChime: state => state.play_chime,
-  getStatsInterruptions: state => state.stats_interruptions,
   getStatsWindow: state => state.stats_window
 };

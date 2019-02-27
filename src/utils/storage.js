@@ -51,24 +51,3 @@ export const loadTimers = () => {
 export const saveTimers = (timers) => {
   localStorage.setItem(`${STORAGE_PREFIX}_timers`, JSON.stringify(timers));
 };
-
-
-/**
- * Load history from local storage
- */
-export const loadHistory = () => {
-  const storedData = localStorage.getItem(`${STORAGE_PREFIX}_history`);
-
-  if (storedData) {
-    return JSON.parse(storedData);
-  }
-
-  return null;
-};
-
-/**
- * Save history to storage.
- */
-export const saveHistory = (history) => {
-  localStorage.setItem(`${STORAGE_PREFIX}_history`, JSON.stringify(history));
-};

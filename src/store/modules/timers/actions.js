@@ -7,7 +7,6 @@ import {
   SET_ACTIVE_TIMER,
   SET_PLAY_SOURCE,
   SET_TIMERS,
-  SET_HISTORY,
   SET_TIMER_STATUS,
   UPDATE_TIMER_VALUE
 } from './mutation_types';
@@ -15,14 +14,17 @@ import {
 import {
   extractTimers,
   loadTimers,
-  saveTimers,
-  loadHistory,
-  saveHistory
+  saveTimers
 } from '../../../utils/storage';
+
+import {
+  saveEvent, saveRun
+} from '../../../utils/database';
 
 import { Timer, TIMER_STATUSES } from '../../../utils/timer';
 
 const timer = new Timer();
+let currentRunId = null;
 
 export const actions = {
   setActiveTimer(store, payload) {
@@ -33,7 +35,6 @@ export const actions = {
   },
   hydrateTimers(store) {
     const timers = loadTimers();
-    const history = loadHistory();
 
     if (timers) {
       store.commit(SET_TIMERS, timers);
@@ -42,10 +43,6 @@ export const actions = {
         store.commit(SET_ACTIVE_TIMER, timers[0].uid);
         store.commit(SET_PLAY_SOURCE, 'user');
       }
-    }
-
-    if (history) {
-      store.commit(SET_HISTORY, history);
     }
   },
   incrementTimer(store) {
@@ -100,12 +97,6 @@ export const actions = {
     store.commit(SET_TIMERS, durations);
     saveTimers(extractTimers(store.state.timers));
   },
-  updateHistory(store, payload) {
-    const history = cloneDeep(store.state.history);
-    history.push(payload);
-    store.commit(SET_HISTORY, history);
-    saveHistory(store.state.history);
-  },
   setTimerStatus(store, payload) {
     store.commit(SET_TIMER_STATUS, payload);
   },
@@ -127,16 +118,20 @@ export const actions = {
   logEvent(store, payload) {
     const datetime = moment.now();
     const event = payload;
-    const { runId } = timer;
+    const runId = currentRunId;
 
-    const historyData = {
+    const eventData = {
       datetime, event, runId
     };
 
-    const history = cloneDeep(store.state.history);
-    history.push(historyData);
-    store.commit(SET_HISTORY, history);
-    saveHistory(store.state.history);
+    saveEvent(eventData);
+  },
+  logRun(store, payload) {
+    const { duration, title } = payload;
+    const runId = currentRunId;
+    const runData = { runId, duration, title };
+
+    saveRun(runData);
   },
   pauseTimer(store) {
     timer.stop();
@@ -164,9 +159,13 @@ export const actions = {
     const uid = store.state.active_timer;
     const duration = find(store.state.timers, d => d.uid === uid);
     timer.setDuration(duration.duration);
-    timer.setRunId(shortid.generate());
+
+    currentRunId = shortid.generate();
+
     timer.start();
     store.dispatch('setTimerStatus', TIMER_STATUSES.PLAYING);
     store.dispatch('logEvent', 'start');
+
+    store.dispatch('logRun', duration);
   },
 };

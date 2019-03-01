@@ -11,20 +11,10 @@
       </v-list-tile-title>
     </v-list-tile>
     <timer-list />
-    <v-list-tile to='/timer'>
-      <v-list-tile-action>
-        <v-icon>
-          alarm_add
-        </v-icon>
-      </v-list-tile-action>
-      <v-list-tile-title>
-        Add a New Timer
-      </v-list-tile-title>
-    </v-list-tile>
     <v-list-tile to='/statistics'>
       <v-list-tile-action>
         <v-icon>
-          history
+          timeline
         </v-icon>
       </v-list-tile-action>
       <v-list-tile-title>

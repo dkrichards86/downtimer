@@ -41,6 +41,9 @@ export default {
     formattedDuration() {
       return countdown => timeFormat(countdown);
     },
+    isActive() {
+      return this.getActiveTimer === this.timer.uid;
+    }
   },
   watch: {
     timer(t) {
@@ -56,7 +59,7 @@ export default {
       'setActiveTimer', 'resetTimer'
     ]),
     activateTimer() {
-      if (this.$router.currentRoute.name === 'timer' && this.getActiveTimer !== this.timer.uid) {
+      if (this.$router.currentRoute.name === 'timer' && !this.isActive) {
         this.setActiveTimer(this.timer.uid);
       } else if (this.$router.currentRoute.name === 'timer') {
         this.resetTimer();

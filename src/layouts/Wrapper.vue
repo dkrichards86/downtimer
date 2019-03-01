@@ -18,6 +18,12 @@
         </v-layout>
       </v-container>
     </v-content>
+    <v-snackbar v-model="snackbar" bottom right :timeout="0">
+      Update Available!
+      <v-btn @click="refresh()" flat pink>
+        Click to Reload
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -43,7 +49,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById', 'getTimers',
+      'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById',
       'getTimerStatus', 'getAutoplay', 'getPlaySource', 'getTimerValue'
     ]),
   },
@@ -84,8 +90,10 @@ export default {
     this.timer = this.getTimerById(this.getActiveTimer);
 
     window.addEventListener('beforeunload', this.exitHandler);
+    document.addEventListener('swUpdated', this.showRefreshUI);
   },
   destroyed() {
+    document.removeEventListener('swUpdated', this.showRefreshUI);
     window.removeEventListener('beforeunload', this.exitHandler);
   },
   methods: {
@@ -104,6 +112,13 @@ export default {
     },
     exitHandler() {
       this.logEvent('exit');
+    },
+    showRefreshUI() {
+      this.snackbar = true;
+    },
+    refresh() {
+      this.snackbar = false;
+      window.location.reload();
     }
   },
 };

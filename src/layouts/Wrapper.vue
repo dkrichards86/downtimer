@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById', 'getTimers',
+      'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById',
       'getTimerStatus', 'getAutoplay', 'getPlaySource', 'getTimerValue'
     ]),
   },

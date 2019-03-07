@@ -89,6 +89,13 @@ export default {
     this.initTimer();
     this.timer = this.getTimerById(this.getActiveTimer);
 
+    if (Push.Permission.get() === Push.Permission.DEFAULT) {
+      Push.create('DownTimer Notification', {
+        body: 'This is where DownTimer notifications will appear.',
+        timeout: 4000
+      });
+    }
+
     window.addEventListener('beforeunload', this.exitHandler);
     document.addEventListener('swUpdated', this.showRefreshUI);
   },

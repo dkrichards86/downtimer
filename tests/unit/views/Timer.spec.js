@@ -7,7 +7,6 @@ import Timer from '@/views/Timer';
 import TimerFace from '@/components/TimerFace';
 import TimerControls from '@/components/TimerControls';
 import { state, actions, getters } from '../__mocks__/store';
-import { AlertChime, NativeNotification } from '../__mocks__/plugins';
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -15,8 +14,6 @@ chai.use(sinonChai);
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Vuetify);
-localVue.use(AlertChime);
-localVue.use(NativeNotification);
 
 describe('Timer.vue', () => {
   let store;

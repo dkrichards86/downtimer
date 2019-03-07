@@ -29,7 +29,6 @@
 
 <script>
 import moment from 'moment';
-import Push from 'push.js';
 import { mapActions, mapGetters } from 'vuex';
 import WrapperSidebar from '../components/WrapperSidebar';
 import { TIMER_STATUSES } from '../utils/timer';
@@ -61,7 +60,7 @@ export default {
       if (status === TIMER_STATUSES.EXPIRED) {
         document.title = 'DownTimer.io';
 
-        Push.create("Time's Up!", {
+        this.$native_notification.notify("Time's Up!", {
           body: `Your timer '${this.timer.title}' has finished.`,
           timeout: 4000,
         });
@@ -89,8 +88,8 @@ export default {
     this.initTimer();
     this.timer = this.getTimerById(this.getActiveTimer);
 
-    if (Push.Permission.get() === Push.Permission.DEFAULT) {
-      Push.create('DownTimer Notification', {
+    if (this.$native_notification.hasDefaultPermission()) {
+      this.$native_notification.notify('DownTimer Notification', {
         body: 'This is where DownTimer notifications will appear.',
         timeout: 4000
       });

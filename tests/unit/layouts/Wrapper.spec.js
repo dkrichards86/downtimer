@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Vuetify from 'vuetify';
 import Router from 'vue-router';
 import { state, actions, getters } from '../__mocks__/store';
+import { AlertChime, NativeNotification } from '../__mocks__/plugins';
 
 import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -16,6 +17,8 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Vuetify);
 localVue.use(Router);
+localVue.use(AlertChime);
+localVue.use(NativeNotification);
 
 describe('Wrapper.vue', () => {
   let store;

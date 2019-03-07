@@ -12,16 +12,12 @@ export const AlertChime = {
 export const NativeNotification = {
   install: (Vue) => {
     Vue.native_notification = {
-      play: () => {},
       notify: () => {},
-      hasPermission: () => {},
-      requestPermission: () => {}
+      hasDefaultPermission: () => false
     };
     Vue.prototype.$native_notification = {
-      play: () => {},
       notify: () => {},
-      hasPermission: () => {},
-      requestPermission: () => {}
+      hasDefaultPermission: () => false
     };
   }
 };

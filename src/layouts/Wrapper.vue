@@ -30,7 +30,6 @@
 <script>
 import moment from 'moment';
 import { mapActions, mapGetters } from 'vuex';
-import Push from 'push.js';
 import WrapperSidebar from '../components/WrapperSidebar';
 import { TIMER_STATUSES } from '../utils/timer';
 
@@ -61,8 +60,8 @@ export default {
       if (status === TIMER_STATUSES.EXPIRED) {
         document.title = 'DownTimer.io';
 
-        Push.create("Time's Up!", {
-          body: `Timer '${this.timer.title}' has expired.`,
+        this.$native_notification.notify("Time's Up!", {
+          body: `Your timer '${this.timer.title}' has finished.`,
           timeout: 4000,
         });
 
@@ -88,6 +87,13 @@ export default {
     this.hydrateSettings();
     this.initTimer();
     this.timer = this.getTimerById(this.getActiveTimer);
+
+    if (this.$native_notification.hasDefaultPermission()) {
+      this.$native_notification.notify('DownTimer Notification', {
+        body: 'This is where DownTimer notifications will appear.',
+        timeout: 4000
+      });
+    }
 
     window.addEventListener('beforeunload', this.exitHandler);
     document.addEventListener('swUpdated', this.showRefreshUI);

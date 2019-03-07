@@ -4,7 +4,7 @@ import Vuetify from 'vuetify';
 import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
 import Settings from '@/views/Settings';
-import { AlertChime, NativeNotification } from '../__mocks__/plugins';
+import { AlertChime } from '../__mocks__/plugins';
 import { state, actions, getters } from '../__mocks__/store';
 
 const { expect } = chai;
@@ -14,7 +14,6 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Vuetify);
 localVue.use(AlertChime);
-localVue.use(NativeNotification);
 
 describe('Settings.vue', () => {
   let store;

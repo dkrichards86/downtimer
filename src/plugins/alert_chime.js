@@ -1,3 +1,4 @@
+import { Howl } from 'howler';
 import arpeggio from '@/assets/sounds/arpeggio.mp3';
 import coins from '@/assets/sounds/coins.mp3';
 import definite from '@/assets/sounds/definite.mp3';
@@ -9,21 +10,8 @@ const CHIMES = {
 };
 
 const play = (chime) => {
-  return new Promise((resolve, reject) => {
-    if ('Audio' in window) {
-      resolve();
-    } else {
-      reject(Error('Audio API not available'));
-    }
-  })
-    .then(() => {
-      const audio = new Audio(CHIMES[chime]);
-      return audio.play();
-    })
-    .catch((err) => {
-      /* eslint-disable no-console */
-      console.log(err);
-    });
+  const alertChime = new Howl({src: [CHIMES[chime]]});
+  alertChime.play();
 };
 
 const AlertChime = {

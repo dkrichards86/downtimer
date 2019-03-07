@@ -29,8 +29,8 @@
 
 <script>
 import moment from 'moment';
-import { mapActions, mapGetters } from 'vuex';
 import Push from 'push.js';
+import { mapActions, mapGetters } from 'vuex';
 import WrapperSidebar from '../components/WrapperSidebar';
 import { TIMER_STATUSES } from '../utils/timer';
 
@@ -62,7 +62,7 @@ export default {
         document.title = 'DownTimer.io';
 
         Push.create("Time's Up!", {
-          body: `Timer '${this.timer.title}' has expired.`,
+          body: `Your timer '${this.timer.title}' has finished.`,
           timeout: 4000,
         });
 

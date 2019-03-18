@@ -24,3 +24,10 @@ export const secToHHMMSS = (secs) => {
 
   return `${hourString}${zeroPad(minutes)}:${zeroPad(seconds)}`;
 };
+
+
+export const extractTimers = timers => timers.map(t => ({
+  duration: t.duration,
+  title: t.title,
+  uid: t.uid
+}));

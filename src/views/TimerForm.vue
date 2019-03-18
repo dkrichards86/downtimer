@@ -153,7 +153,8 @@ export default {
         const payload = {
           title: this.title,
           duration: secs,
-          uid: this.uid
+          uid: shortid(),
+          editId: this.editId,
         };
         this.updateTimers(payload);
         this.closeDialog();
@@ -166,13 +167,12 @@ export default {
       };
       this.headline = 'New Timer';
       this.isEdit = false;
-      this.uid = shortid();
 
       if (uid) {
         duration = this.getTimerById(uid);
         this.headline = 'Edit Timer';
         this.isEdit = true;
-        this.uid = uid;
+        this.editId = uid;
       }
 
       this.title = duration.title;

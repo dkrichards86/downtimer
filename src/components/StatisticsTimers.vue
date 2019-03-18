@@ -1,10 +1,10 @@
 <script>
-import { Bar } from 'vue-chartjs';
+import { Line } from 'vue-chartjs';
 import { secToHHMMSS } from '../utils/helpers';
 
 export default {
   name: 'StatisticsTimers',
-  mixins: [Bar],
+  mixins: [Line],
   props: {
     starts: {
       type: Object,
@@ -48,20 +48,24 @@ export default {
       return { starts, completions };
     },
     render(starts, completions) {
+      if (starts.length === 0 || completions.length === 0) return;
+
       const datasets = [
         {
           label: 'Time Scheduled',
-          yAxisID: 'time',
           data: starts,
           borderColor: '#f57c00',
-          backgroundColor: 'rgba(245, 124, 0, 0.6)'
+          backgroundColor: 'rgba(245, 124, 0, 0.6)',
+          fill: false,
+          pointStyle: 'line'
         },
         {
           label: 'Time Completed',
-          yAxisID: 'time',
           data: completions,
           borderColor: '#388e3c',
-          backgroundColor: 'rgba(56, 142, 60, 0.6)'
+          backgroundColor: 'rgba(56, 142, 60, 0.6)',
+          fill: false,
+          pointStyle: 'line'
         }
       ];
 
@@ -101,20 +105,11 @@ export default {
             },
             gridLines: {
               display: false
-            },
-            offset: true
+            }
           }],
           yAxes: [
             {
-              id: 'time',
-              position: 'left',
-              gridLines: {
-                display: false
-              },
-              ticks: {
-                beginAtZero: true,
-                callback: secToHHMMSS,
-              }
+              display: false
             }
           ]
         },

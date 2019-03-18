@@ -6,39 +6,38 @@ import {
   SET_STATS_WINDOW
 } from './mutation_types';
 
-import {
-  loadSettings,
-  saveSettings
-} from '../../../utils/storage';
+import { Storage } from '../../../utils/storage';
+
+const settingsStorage = new Storage('settings');
 
 export const actions = {
   setAutoplay(store, payload) {
     store.commit(SET_AUTOPLAY, payload);
 
-    saveSettings({ autoplay: payload });
+    settingsStorage.add({ autoplay: payload });
   },
   setCycle(store, payload) {
     store.commit(SET_CYCLE, payload);
 
-    saveSettings({ cycle: payload });
+    settingsStorage.add({ cycle: payload });
   },
   setPlayChime(store, payload) {
     store.commit(SET_PLAY_CHIME, payload);
 
-    saveSettings({ play_chime: payload });
+    settingsStorage.add({ play_chime: payload });
   },
   setChime(store, payload) {
     store.commit(SET_CHIME, payload);
 
-    saveSettings({ chime: payload });
+    settingsStorage.add({ chime: payload });
   },
   setStatsWindow(store, payload) {
     store.commit(SET_STATS_WINDOW, payload);
 
-    saveSettings({ stats_window: payload });
+    settingsStorage.add({ stats_window: payload });
   },
   hydrateSettings(store) {
-    const settings = loadSettings();
+    const settings = settingsStorage.load();
 
     if (settings) {
       if ('autoplay' in settings) {

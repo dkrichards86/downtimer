@@ -5,23 +5,31 @@
         <statistics-controls />
       </v-card-text>
     </v-card>
-    <v-card class="mb-4">
-      <v-card-text>
-        <statistics-timers
-          :style="{height: '180px'}"
-          :starts="starts"
-          :completions="completions" />
-      </v-card-text>
-    </v-card>
-    <v-card>
-      <v-card-text>
-        <statistics-table
-          :days="days"
-          :starts="starts"
-          :completions="completions"
-          :interruptions="interruptions" />
-      </v-card-text>
-    </v-card>
+    <div v-if="hasData">
+      <v-card class="mb-4">
+        <v-card-text>
+          <v-card-title class="title">
+            Daily Usage
+          </v-card-title>
+          <statistics-timers :style="{height: '180px'}" :stats="stats" />
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-text>
+          <v-card-title class="title">
+            Usage Details
+          </v-card-title>
+          <statistics-table :stats="stats" />
+        </v-card-text>
+      </v-card>
+    </div>
+    <div v-else>
+      <v-card>
+        <v-card-text>
+          No timers have run in the selected time window.
+        </v-card-text>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -30,7 +38,6 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 import groupBy from 'lodash/groupBy';
 import find from 'lodash/find';
-import cloneDeep from 'lodash/cloneDeep';
 
 import StatisticsTimers from '../components/StatisticsTimers';
 import StatisticsTable from '../components/StatisticsTable';
@@ -61,15 +68,13 @@ export default {
     return {
       runs: {},
       events: [],
-      starts: {},
-      completions: {},
-      interruptions: {},
-      days: []
+      stats: {},
+      hasData: false
     };
   },
   computed: {
     ...mapGetters([
-      'getStatsWindow'
+      'getStatsWindow', 'getTimerStatus'
     ]),
   },
   mounted() {
@@ -78,36 +83,38 @@ export default {
   watch: {
     getStatsWindow() {
       this.parseData();
+    },
+    getTimerStatus() {
+      this.parseData();
     }
   },
   methods: {
     parseData() {
       const runs = runStorage.load();
       const events = eventStorage.load();
+      this.hasData = false;
 
-      if (!runs || !events) return;
+      if (!runs || !events) {
+        return;
+      }
 
       runs.forEach(r => { this.runs[r.runId] = r.duration; });
       this.events = events;
 
       const today = moment();
-      const dayObj = {};
-      const dayShape = { duration: 0, count: 0 };
+      const statsData = {};
+      const dayShape = { started: 0, completed: 0, interruptions: 0 };
 
-      dayObj[today.startOf('day')] = { ...dayShape };
-      [...Array(this.getStatsWindow - 1)].forEach(() => { dayObj[today.subtract(1, 'd').startOf('day')] = { ...dayShape }; });
+      statsData[today.startOf('day')] = { ...dayShape };
+      [...Array(this.getStatsWindow - 1)].forEach(() => { statsData[today.subtract(1, 'd').startOf('day')] = { ...dayShape }; });
 
       const groups = groupBy(this.events.filter(e => e.runId), (e) => moment(e.datetime * 1000).startOf('day'));
-
-      this.starts = cloneDeep(dayObj);
-      this.interruptions = cloneDeep(dayObj);
-      this.completions = cloneDeep(dayObj);
-      this.days = Object.keys(dayObj);
 
       Object.entries(groups).forEach((group) => {
         const [groupDate, groupEvents] = [...group];
 
-        if (groupDate in dayObj) {
+        if (groupDate in statsData) {
+          this.hasData = true;
           const _runs = groupBy(groupEvents, 'runId');
 
           Object.entries(_runs).forEach((r) => {
@@ -115,17 +122,15 @@ export default {
 
             const pauses = runEvents.map(e => e.event === 'pause').filter(e => e);
             if (pauses) {
-              this.interruptions[groupDate].count += pauses.length;
+              statsData[groupDate].interruptions += pauses.length;
             }
 
             if (find(runEvents, e => e.event === 'start')) {
-              this.starts[groupDate].duration += this.runs[runId];
-              this.starts[groupDate].count += 1;
+              statsData[groupDate].started += this.runs[runId];
             }
 
             if (find(runEvents, e => e.event === 'expiry')) {
-              this.completions[groupDate].duration += this.runs[runId];
-              this.completions[groupDate].count += 1;
+              statsData[groupDate].completed += this.runs[runId];
             } else {
               let state = '';
               let time = 0;
@@ -143,11 +148,13 @@ export default {
                 return acc + val;
               }, 0);
 
-              this.completions[groupDate].duration += timeCompleted;
+              statsData[groupDate].completed += timeCompleted;
             }
           });
         }
       });
+
+      this.stats = statsData;
     }
   }
 };

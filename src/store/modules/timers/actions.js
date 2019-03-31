@@ -120,7 +120,7 @@ export const actions = {
   },
   logEvent(store, payload) {
     if (currentRunId) {
-      const allEvents = eventStorage.load();
+      const allEvents = eventStorage.load() || [];
       const datetime = moment().format('X');
       const event = payload;
       const runId = currentRunId;
@@ -136,7 +136,7 @@ export const actions = {
     }
   },
   logRun(store, payload) {
-    const allRuns = runStorage.load();
+    const allRuns = runStorage.load() || [];
 
     const { duration } = payload;
     const runId = currentRunId;

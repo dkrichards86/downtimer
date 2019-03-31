@@ -143,7 +143,7 @@ export default {
     },
     removeItem() {
       if (this.isEdit) {
-        this.removeTimer(this.uid);
+        this.removeTimer(this.editId);
         this.closeDialog();
       }
     },

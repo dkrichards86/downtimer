@@ -22,7 +22,8 @@ export const state = {
   play_chime: false,  
   timer_status: -1,
   timer_value: 0,
-  stats_window: 14
+  stats_window: 14,
+  device_id: "foobarbaz"
 };
 
 export const actions = {
@@ -34,6 +35,9 @@ export const actions = {
   setChime: sinon.stub(),
   hydrateTimers: sinon.stub(),
   hydrateSettings: sinon.stub(),
+  hydrateMetadata: sinon.stub(),
+  hydrate: sinon.stub(),
+  sync: sinon.stub(),
   incrementTimer: sinon.stub(),
   removeTimer: sinon.stub(),
   setTimers: sinon.stub(),
@@ -46,6 +50,7 @@ export const actions = {
   resumeTimer: sinon.stub(),
   resetTimer: sinon.stub(),
   completeTimer: sinon.stub(),
+  
 };
 
 export const getters = {
@@ -59,5 +64,6 @@ export const getters = {
   getTimers: state => state.timers,
   getTimerStatus: state => state.timer_status,
   getTimerValue: state => state.timer_value,
-  getStatsWindow: state => state.stats_window
+  getStatsWindow: state => state.stats_window,
+  getDeviceId: state => state.device_id
 };

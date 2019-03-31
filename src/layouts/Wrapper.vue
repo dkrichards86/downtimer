@@ -83,8 +83,7 @@ export default {
     }
   },
   created() {
-    this.hydrateTimers();
-    this.hydrateSettings();
+    this.hydrate();
     this.initTimer();
     this.timer = this.getTimerById(this.getActiveTimer);
 
@@ -104,7 +103,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'hydrateTimers', 'hydrateSettings', 'initTimer', 'startTimer',
+      'hydrate', 'initTimer', 'startTimer',
       'setTimerStatus', 'logEvent'
     ]),
     setTitle(ms) {

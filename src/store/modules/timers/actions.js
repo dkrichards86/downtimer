@@ -11,17 +11,15 @@ import {
   UPDATE_TIMER_VALUE
 } from './mutation_types';
 
-import {
-  extractTimers,
-  loadTimers,
-  saveTimers
-} from '../../../utils/storage';
+import { Storage } from '../../../utils/storage';
 
-import {
-  saveEvent, saveRun
-} from '../../../utils/database';
+import { extractTimers } from '../../../utils/helpers';
 
 import { Timer, TIMER_STATUSES } from '../../../utils/timer';
+
+const timerStorage = new Storage('timers');
+const runStorage = new Storage('runs');
+const eventStorage = new Storage('events');
 
 const timer = new Timer();
 let currentRunId = null;
@@ -34,7 +32,7 @@ export const actions = {
     store.commit(UPDATE_TIMER_VALUE, duration.duration);
   },
   hydrateTimers(store) {
-    const timers = loadTimers();
+    const timers = timerStorage.load();
 
     if (timers) {
       store.commit(SET_TIMERS, timers);
@@ -71,20 +69,25 @@ export const actions = {
   removeTimer(store, payload) {
     const durations = cloneDeep(store.state.timers).filter(d => d.uid !== payload);
     store.commit(SET_TIMERS, durations);
-    saveTimers(extractTimers(store.state.timers));
+    timerStorage.save(extractTimers(store.state.timers));
   },
   setTimers(store, payload) {
     store.commit(SET_TIMERS, payload);
   },
   updateTimers(store, payload) {
     const durations = cloneDeep(store.state.timers);
-    const editIndex = durations.findIndex(d => d.uid === payload.uid);
+    const editIndex = durations.findIndex(d => d.uid === payload.editId);
 
     if (editIndex !== -1) {
       const editDuration = durations[editIndex];
       editDuration.duration = payload.duration;
       editDuration.title = payload.title;
+      editDuration.uid = payload.uid;
       durations.splice(editIndex, 1, editDuration);
+
+      if (store.state.active_timer === payload.editId) {
+        store.commit(SET_ACTIVE_TIMER, payload.uid);
+      }
     } else {
       const newDuration = {
         title: payload.title,
@@ -95,7 +98,7 @@ export const actions = {
     }
 
     store.commit(SET_TIMERS, durations);
-    saveTimers(extractTimers(store.state.timers));
+    timerStorage.save(extractTimers(store.state.timers));
   },
   setTimerStatus(store, payload) {
     store.commit(SET_TIMER_STATUS, payload);
@@ -116,22 +119,32 @@ export const actions = {
     }
   },
   logEvent(store, payload) {
-    const datetime = moment.now();
-    const event = payload;
-    const runId = currentRunId;
+    if (currentRunId) {
+      const allEvents = eventStorage.load() || [];
+      const datetime = moment().format('X');
+      const event = payload;
+      const runId = currentRunId;
+      const synced = false;
 
-    const eventData = {
-      datetime, event, runId
-    };
+      const eventData = {
+        datetime, event, runId, synced
+      };
 
-    saveEvent(eventData);
+      allEvents.push(eventData);
+
+      eventStorage.save(allEvents);
+    }
   },
   logRun(store, payload) {
-    const { duration, title } = payload;
-    const runId = currentRunId;
-    const runData = { runId, duration, title };
+    const allRuns = runStorage.load() || [];
 
-    saveRun(runData);
+    const { duration } = payload;
+    const runId = currentRunId;
+    const synced = false;
+    const runData = { runId, duration, synced };
+
+    allRuns.push(runData);
+    runStorage.save(allRuns);
   },
   pauseTimer(store) {
     timer.stop();

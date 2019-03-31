@@ -5,26 +5,31 @@
         <statistics-controls />
       </v-card-text>
     </v-card>
-    <v-card class="mb-4">
-      <v-card-text>
-        <statistics-timers :starts="starts" :completions="completions" />
-      </v-card-text>
-    </v-card>
-    <v-card class="mb-4">
-      <v-card-text>
-        <statistics-percents :starts="starts" :completions="completions" :days="days" />
-      </v-card-text>
-    </v-card>
-    <v-card class="mb-4">
-      <v-card-text>
-        <statistics-interruptions :interruptions="interruptions" />
-      </v-card-text>
-    </v-card>
-    <v-card class="mb-4">
-      <v-card-text>
-        <statistics-means :stops="interruptions" :days="days" />
-      </v-card-text>
-    </v-card>
+    <div v-if="hasData">
+      <v-card class="mb-4">
+        <v-card-text>
+          <v-card-title class="title">
+            Daily Usage
+          </v-card-title>
+          <statistics-timers :style="{height: '180px'}" :stats="stats" />
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-text>
+          <v-card-title class="title">
+            Usage Details
+          </v-card-title>
+          <statistics-table :stats="stats" />
+        </v-card-text>
+      </v-card>
+    </div>
+    <div v-else>
+      <v-card>
+        <v-card-text>
+          No timers have run in the selected time window.
+        </v-card-text>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -33,15 +38,15 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 import groupBy from 'lodash/groupBy';
 import find from 'lodash/find';
-import cloneDeep from 'lodash/cloneDeep';
 
 import StatisticsTimers from '../components/StatisticsTimers';
-import StatisticsCompletionPercents from '../components/StatisticsCompletionPercents';
-import StatisticsDailyInterruptions from '../components/StatisticsDailyInterruptions';
-import StatisticsMeanInterruptions from '../components/StatisticsMeanInterruptions';
+import StatisticsTable from '../components/StatisticsTable';
 import StatisticsControls from '../components/StatisticsControls';
 
-import { loadEvents, loadRuns } from '../utils/database';
+import { Storage } from '../utils/storage';
+
+const runStorage = new Storage('runs');
+const eventStorage = new Storage('events');
 
 const TRANSITIONS = {
   start: ['pause', 'exit', 'expiry', 'reset'],
@@ -56,82 +61,80 @@ export default {
   name: 'Statistics',
   components: {
     'statistics-timers': StatisticsTimers,
-    'statistics-percents': StatisticsCompletionPercents,
-    'statistics-interruptions': StatisticsDailyInterruptions,
-    'statistics-means': StatisticsMeanInterruptions,
+    'statistics-table': StatisticsTable,
     'statistics-controls': StatisticsControls
   },
   data() {
     return {
       runs: {},
       events: [],
-      starts: {},
-      completions: {},
-      interruptions: {},
-      days: []
+      stats: {},
+      hasData: false
     };
   },
   computed: {
     ...mapGetters([
-      'getStatsWindow'
+      'getStatsWindow', 'getTimerStatus'
     ]),
+  },
+  mounted() {
+    this.parseData();
   },
   watch: {
     getStatsWindow() {
       this.parseData();
+    },
+    getTimerStatus() {
+      this.parseData();
     }
-  },
-  mounted() {
-    Promise.all([loadRuns(), loadEvents()])
-      .then(resolution => {
-        const [runs, events] = resolution;
-        runs.forEach(r => { this.runs[r.runId] = { duration: r.duration, title: r.title }; });
-        this.events = events;
-        this.parseData();
-      });
   },
   methods: {
     parseData() {
+      const runs = runStorage.load();
+      const events = eventStorage.load();
+      this.hasData = false;
+
+      if (!runs || !events) {
+        return;
+      }
+
+      runs.forEach(r => { this.runs[r.runId] = r.duration; });
+      this.events = events;
+
       const today = moment();
-      const dayObj = {};
-      const dayShape = { duration: 0, count: 0 };
+      const statsData = {};
+      const dayShape = { started: 0, completed: 0, interruptions: 0 };
 
-      dayObj[today.format('MMM D')] = { ...dayShape };
-      [...Array(this.getStatsWindow - 1)].forEach(() => { dayObj[today.subtract(1, 'd').format('MMM D')] = { ...dayShape }; });
+      statsData[today.startOf('day')] = { ...dayShape };
+      [...Array(this.getStatsWindow - 1)].forEach(() => { statsData[today.subtract(1, 'd').startOf('day')] = { ...dayShape }; });
 
-      const groups = groupBy(this.events.filter(e => e.runId), (e) => moment(e.datetime).format('MMM D'));
-
-      this.starts = cloneDeep(dayObj);
-      this.interruptions = cloneDeep(dayObj);
-      this.completions = cloneDeep(dayObj);
-      this.days = Object.keys(dayObj);
+      const groups = groupBy(this.events.filter(e => e.runId), (e) => moment(e.datetime * 1000).startOf('day'));
 
       Object.entries(groups).forEach((group) => {
-        const [date, events] = [...group];
+        const [groupDate, groupEvents] = [...group];
 
-        if (date in dayObj) {
-          const _runs = groupBy(events, 'runId');
+        if (groupDate in statsData) {
+          this.hasData = true;
+          const _runs = groupBy(groupEvents, 'runId');
 
           Object.entries(_runs).forEach((r) => {
-            const [runId, _events] = [...r];
+            const [runId, runEvents] = [...r];
 
-            const pauses = _events.map(e => e.event === 'pause').filter(e => e);
+            const pauses = runEvents.map(e => e.event === 'pause').filter(e => e);
             if (pauses) {
-              this.interruptions[date].count += pauses.length;
+              statsData[groupDate].interruptions += pauses.length;
             }
 
-            if (find(_events, e => e.event === 'start')) {
-              this.starts[date].duration += this.runs[runId].duration;
-              this.starts[date].count += 1;
+            if (find(runEvents, e => e.event === 'start')) {
+              statsData[groupDate].started += this.runs[runId];
             }
 
-            if (find(_events, e => e.event === 'expiry')) {
-              this.completions[date].duration += this.runs[runId].duration;
-              this.completions[date].count += 1;
+            if (find(runEvents, e => e.event === 'expiry')) {
+              statsData[groupDate].completed += this.runs[runId];
             } else {
               let state = '';
               let time = 0;
-              const timeCompleted = _events.reduce((acc, curr) => {
+              const timeCompleted = runEvents.reduce((acc, curr) => {
                 const evt = curr.event;
                 const _trans = TRANSITIONS[state];
                 let val = 0;
@@ -145,11 +148,13 @@ export default {
                 return acc + val;
               }, 0);
 
-              this.completions[date].duration += Math.floor(timeCompleted / 1000);
+              statsData[groupDate].completed += timeCompleted;
             }
           });
         }
       });
+
+      this.stats = statsData;
     }
   }
 };

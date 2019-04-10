@@ -14,7 +14,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Vuetify);
 
-describe('StatisticsCard.vue', () => {
+describe('WrapperSidebarTimerListItem.vue', () => {
   let store;
   let wrapper;
 

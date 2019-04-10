@@ -18,12 +18,8 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-snackbar v-model="snackbar" bottom right :timeout="0">
-      Update Available!
-      <v-btn @click="refresh()" flat pink>
-        Click to Reload
-      </v-btn>
-    </v-snackbar>
+    <reload-snackbar v-if="swupdate" />
+    <rating-snackbar v-if="getTimerStatus === 2"/>
   </v-app>
 </template>
 
@@ -31,29 +27,34 @@
 import moment from 'moment';
 import { mapActions, mapGetters } from 'vuex';
 import WrapperSidebar from '../components/WrapperSidebar';
+import SWReloadSnackbar from '../components/SWReloadSnackbar';
+import TimerRatingSnackbar from '../components/TimerRatingSnackbar';
 import { TIMER_STATUSES } from '../utils/timer';
 
 export default {
   name: 'Wrapper',
   components: {
-    sidebar: WrapperSidebar
+    sidebar: WrapperSidebar,
+    'reload-snackbar': SWReloadSnackbar,
+    'rating-snackbar': TimerRatingSnackbar
   },
   data() {
     return {
       minute: 0,
       drawer: null,
-      snackbar: false,
+      swupdate: false,
       timer: null
     };
   },
   computed: {
     ...mapGetters([
       'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById',
-      'getTimerStatus', 'getAutoplay', 'getPlaySource', 'getTimerValue'
+      'getTimerStatus', 'getTimerValue'
     ]),
   },
   watch: {
     getActiveTimer(newTimer) {
+      this.last_timer = Object.assign({}, this.timer);
       this.timer = this.getTimerById(newTimer);
     },
     getTimerStatus(status) {
@@ -67,12 +68,6 @@ export default {
 
         if (this.getPlayChime) {
           this.$alert_chime.play(this.getChime);
-        }
-
-        if (this.getAutoplay && this.getPlaySource === 'increment') {
-          this.startTimer();
-        } else {
-          this.setTimerStatus(TIMER_STATUSES.STOPPED);
         }
       } else if (status === TIMER_STATUSES.PAUSED) {
         document.title = 'DownTimer.io - Paused';
@@ -119,11 +114,7 @@ export default {
       this.logEvent('exit');
     },
     showRefreshUI() {
-      this.snackbar = true;
-    },
-    refresh() {
-      this.snackbar = false;
-      window.location.reload();
+      this.swupdate = true;
     }
   },
 };

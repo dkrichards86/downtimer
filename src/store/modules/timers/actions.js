@@ -5,10 +5,10 @@ import shortid from 'shortid';
 
 import {
   SET_ACTIVE_TIMER,
-  SET_PLAY_SOURCE,
   SET_TIMERS,
   SET_TIMER_STATUS,
-  UPDATE_TIMER_VALUE
+  UPDATE_TIMER_VALUE,
+  SET_CURRENT_RUN_ID
 } from './mutation_types';
 
 import { Storage } from '../../../utils/storage';
@@ -22,12 +22,10 @@ const runStorage = new Storage('runs');
 const eventStorage = new Storage('events');
 
 const timer = new Timer();
-let currentRunId = null;
 
 export const actions = {
   setActiveTimer(store, payload) {
     store.commit(SET_ACTIVE_TIMER, payload);
-    store.commit(SET_PLAY_SOURCE, 'user');
     const duration = find(store.state.timers, d => d.uid === payload);
     store.commit(UPDATE_TIMER_VALUE, duration.duration);
   },
@@ -39,32 +37,8 @@ export const actions = {
 
       if (timers.length) {
         store.commit(SET_ACTIVE_TIMER, timers[0].uid);
-        store.commit(SET_PLAY_SOURCE, 'user');
       }
     }
-  },
-  incrementTimer(store) {
-    const { timers } = store.state;
-
-    if (timers.length > 1) {
-      const currTimer = store.state.active_timer;
-      let activeTimerIndex = timers.findIndex(d => d.uid === currTimer);
-      activeTimerIndex++;
-
-      if (activeTimerIndex < timers.length) {
-        store.commit(SET_ACTIVE_TIMER, timers[activeTimerIndex].uid);
-      } else if (store.state.cycle) {
-        store.commit(SET_ACTIVE_TIMER, timers[0].uid);
-      }
-    } else if (timers.length === 1 && store.state.cycle) {
-      // If we only have 1 timer but are set to autoincrement and cycle, we have
-      // reset the timer, then manually transition to expired status to trigger
-      // a rerender.
-      store.dispatch('resetTimer');
-      store.commit(SET_TIMER_STATUS, TIMER_STATUSES.EXPIRED);
-    }
-
-    store.commit(SET_PLAY_SOURCE, 'increment');
   },
   removeTimer(store, payload) {
     const durations = cloneDeep(store.state.timers).filter(d => d.uid !== payload);
@@ -113,17 +87,13 @@ export const actions = {
   completeTimer(store) {
     store.dispatch('setTimerStatus', TIMER_STATUSES.EXPIRED);
     store.dispatch('logEvent', 'expiry');
-
-    if (store.state.autoplay) {
-      store.dispatch('incrementTimer');
-    }
   },
   logEvent(store, payload) {
-    if (currentRunId) {
+    if (store.state.current_run_id) {
       const allEvents = eventStorage.load() || [];
       const datetime = moment().format('X');
       const event = payload;
-      const runId = currentRunId;
+      const runId = store.state.current_run_id;
       const synced = false;
 
       const eventData = {
@@ -139,7 +109,7 @@ export const actions = {
     const allRuns = runStorage.load() || [];
 
     const { duration } = payload;
-    const runId = currentRunId;
+    const runId = store.state.current_run_id;
     const synced = false;
     const runData = { runId, duration, synced };
 
@@ -152,7 +122,7 @@ export const actions = {
     store.dispatch('logEvent', 'pause');
   },
   resetTimer(store) {
-    if (store.state.timer_statue !== TIMER_STATUSES.EXPIRED) {
+    if (store.state.timer_status !== TIMER_STATUSES.EXPIRED) {
       store.dispatch('logEvent', 'reset');
     }
 
@@ -173,7 +143,7 @@ export const actions = {
     const duration = find(store.state.timers, d => d.uid === uid);
     timer.setDuration(duration.duration);
 
-    currentRunId = shortid.generate();
+    store.dispatch('setCurrentRunId', shortid.generate());
 
     timer.start();
     store.dispatch('setTimerStatus', TIMER_STATUSES.PLAYING);
@@ -181,4 +151,24 @@ export const actions = {
 
     store.dispatch('logRun', duration);
   },
+  setCurrentRunId(store, payload) {
+    store.commit(SET_CURRENT_RUN_ID, payload);
+  },
+  setRating(store, payload) {
+    const allRuns = runStorage.load() || [];
+    const runId = store.state.current_run_id;
+
+    const ratedRuns = allRuns.map(r => {
+      if (r.runId === runId) {
+        r.rating = payload;
+      }
+
+      return r;
+    });
+
+    runStorage.save(ratedRuns);
+
+    // moving timer status from expired to stopped removes the snackbar
+    store.dispatch('setTimerStatus', TIMER_STATUSES.STOPPED);
+  }
 };

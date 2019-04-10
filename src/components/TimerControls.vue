@@ -49,6 +49,6 @@ export default {
     ...mapActions([
       'startTimer', 'pauseTimer', 'resetTimer', 'resumeTimer'
     ])
-  },
+  }
 };
 </script>

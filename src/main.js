@@ -1,7 +1,8 @@
 import 'promise-polyfill/src/polyfill';
 
 import Vue from 'vue';
-import './plugins/vuetify';
+import Vuetify from 'vuetify/lib';
+import 'vuetify/src/stylus/app.styl';
 import Wrapper from './layouts/Wrapper.vue';
 import store from './store';
 import AlertChime from './plugins/alert_chime.js';
@@ -14,6 +15,12 @@ Vue.config.productionTip = false;
 
 Vue.use(AlertChime);
 Vue.use(NativeNotification);
+Vue.use(Vuetify, {
+  iconfont: 'md',
+  theme: {
+    primary: '#34495E',
+  },
+});
 
 new Vue({
   store,

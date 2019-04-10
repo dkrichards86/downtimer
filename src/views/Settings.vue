@@ -4,13 +4,10 @@
       Settings
     </v-card-title>
     <v-card-text>
-      <v-switch
-        v-model="autoplay"
-        label="Automatically play next timer" />
-      <v-switch
-        v-model="cycle"
-        :disabled="!getAutoplay"
-        label="Repeat timer list" />
+      <v-select
+        v-model="timeWindow"
+        :items="windows"
+        label="Time Windows"/>
       <v-switch
         v-model="playchime"
         label="Play a chime on completion" />
@@ -37,21 +34,18 @@ export default {
         { title: 'Coins', chime: 'coins' },
         { title: 'Definite', chime: 'definite' },
         { title: 'Not bad', chime: 'notbad' }
+      ],
+      windows: [
+        { value: 7, text: 'Past Week' },
+        { value: 14, text: 'Past 2 Weeks' },
+        { value: 28, text: 'Past 4 Weeks' }
       ]
     };
   },
   computed: {
     ...mapGetters([
-      'getAutoplay', 'getCycle', 'getTimers', 'getChime', 'getPlayChime'
+      'getChime', 'getPlayChime', 'getStatsWindow'
     ]),
-    autoplay: {
-      get() {
-        return this.getAutoplay;
-      },
-      set(value) {
-        this.setAutoplay(value);
-      },
-    },
     playchime: {
       get() {
         return this.getPlayChime;
@@ -69,18 +63,18 @@ export default {
         this.setChime(value);
       }
     },
-    cycle: {
+    timeWindow: {
       get() {
-        return this.getCycle;
+        return this.getStatsWindow;
       },
       set(value) {
-        this.setCycle(value);
-      },
-    },
+        this.setStatsWindow(value);
+      }
+    }
   },
   methods: {
     ...mapActions([
-      'setAutoplay', 'setCycle', 'setChime', 'setPlayChime'
+      'setChime', 'setPlayChime', 'setStatsWindow'
     ]),
   },
 };

@@ -5,6 +5,8 @@ import { actions } from './actions';
 import { getters } from './getters';
 import { mutations } from './mutations';
 
+import { TIMER_STATUSES } from '../../../utils/timer';
+
 Vue.use(Vuex);
 
 const DEFAULT_TIMER = {
@@ -16,8 +18,9 @@ const DEFAULT_TIMER = {
 const state = {
   active_timer: DEFAULT_TIMER.uid,
   timers: [DEFAULT_TIMER],
-  timer_status: -1,
-  timer_value: DEFAULT_TIMER.duration
+  timer_status: TIMER_STATUSES.STOPPED,
+  timer_value: DEFAULT_TIMER.duration,
+  current_run_id: null
 };
 
 export default {

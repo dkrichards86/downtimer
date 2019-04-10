@@ -10,7 +10,7 @@ chai.use(sinonChai);
 const localVue = createLocalVue();
 localVue.use(Vuetify);
 
-describe('Sidebar.vue', () => {
+describe('WrapperSidebar.vue', () => {
   let wrapper;
 
   beforeEach(() => {

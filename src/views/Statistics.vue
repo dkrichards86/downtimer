@@ -1,10 +1,5 @@
 <template>
   <div>
-    <v-card class="mb-4">
-      <v-card-text>
-        <statistics-controls />
-      </v-card-text>
-    </v-card>
     <div v-if="hasData">
       <v-card class="mb-4">
         <v-card-text>
@@ -41,7 +36,6 @@ import find from 'lodash/find';
 
 import StatisticsTimers from '../components/StatisticsTimers';
 import StatisticsTable from '../components/StatisticsTable';
-import StatisticsControls from '../components/StatisticsControls';
 
 import { Storage } from '../utils/storage';
 
@@ -61,8 +55,7 @@ export default {
   name: 'Statistics',
   components: {
     'statistics-timers': StatisticsTimers,
-    'statistics-table': StatisticsTable,
-    'statistics-controls': StatisticsControls
+    'statistics-table': StatisticsTable
   },
   data() {
     return {

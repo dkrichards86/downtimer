@@ -3,9 +3,6 @@ import find from 'lodash/find';
 
 export const state = {
   active_timer: 'foo',
-  autoplay: false,
-  cycle: false,
-  playSource: 'user',
   timers: [
     {
       uid: 'foo',
@@ -28,8 +25,6 @@ export const state = {
 
 export const actions = {
   setActiveTimer: sinon.stub(),
-  setAutoplay: sinon.stub(),
-  setCycle: sinon.stub(),
   setPlayChime: sinon.stub(),
   setStatsWindow: sinon.stub(),
   setChime: sinon.stub(),
@@ -55,9 +50,6 @@ export const actions = {
 
 export const getters = {
   getActiveTimer: state => state.active_timer,
-  getAutoplay: state => state.autoplay,
-  getPlaySource: state => state.play_source,
-  getCycle: state => state.cycle,
   getPlayChime: state => state.play_chime,
   getChime: state => state.chime,
   getTimerById: state => uid => find(state.timers, d => d.uid === uid),

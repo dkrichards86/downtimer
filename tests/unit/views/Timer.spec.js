@@ -28,15 +28,7 @@ describe('Timer.vue', () => {
   });
 
   describe('rendering', () => {
-    it('section should v-card', () => {
-      expect(wrapper.is('v-card-stub')).to.equal(true);
-    });
-
-    it('should render a header', () => {
-      expect(wrapper.contains('v-card-title-stub')).to.equal(true);
-    });
-
-    it('should render a timer face', () => {
+    it('should be a timer face', () => {
       expect(wrapper.contains(TimerFace)).to.equal(true);
     });
     

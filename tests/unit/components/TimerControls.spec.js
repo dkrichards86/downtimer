@@ -13,7 +13,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Vuetify);
 
-describe('Timer.vue', () => {
+describe('TimerControls.vue', () => {
   let store;
   let wrapper;
 

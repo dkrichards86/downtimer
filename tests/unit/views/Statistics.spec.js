@@ -4,7 +4,6 @@ import Vuetify from 'vuetify';
 import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
 import Statistics from '@/views/Statistics';
-import StatisticsControls from '@/components/StatisticsControls';
 
 import { state, actions, getters } from '../__mocks__/store';
 
@@ -30,10 +29,6 @@ describe('Statistics.vue', () => {
   describe('rendering', () => {
     it('should be a div', () => {
       expect(wrapper.is('div')).to.equal(true);
-    });
-    
-    it('should display statistics controls in v-card-text', () => {
-      expect(wrapper.findAll(StatisticsControls).length).to.equal(1);
     });
   });
 });

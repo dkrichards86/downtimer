@@ -7,8 +7,6 @@ import { mutations } from './mutations';
 Vue.use(Vuex);
 
 const state = {
-  autoplay: false,
-  cycle: false,
   chime: 'arpeggio',
   play_chime: false,
   stats_window: 14

@@ -43,73 +43,26 @@ describe('Settings.vue', () => {
 
     it('should display form components', () => {
       const content = wrapper.find('v-card-text-stub');
-      expect(content.findAll('v-switch-stub').length).to.equal(3);
-      expect(content.findAll('v-select-stub').length).to.equal(1);
+      expect(content.findAll('v-switch-stub').length).to.equal(1);
+      expect(content.findAll('v-select-stub').length).to.equal(2);
     });
 
-    it('should disable repeat if autoplay is false', () => {
-      const switches = wrapper.findAll('v-switch-stub');
-      const repeatSwitch= switches.at(1);
-      expect(repeatSwitch.attributes('disabled')).to.equal('true');
-    });
+    // it('should disable chime select if playchime is false', () => {
+    //   const chimeSelect = wrapper.findAll('v-select-stub')[1];
+    //   expect(chimeSelect.attributes('disabled')).to.equal('true');
+    // });
     
-    it('should not disable repeat if autoplay is true', () => {
-      const switches = wrapper.findAll('v-switch-stub');
-      const repeatSwitch= switches.at(1);
-      wrapper.setData({autoplay: true});
+    // it('should not disable chime select if playchime is true', () => {
+    //   const chimeSelect = wrapper.find('v-select-stub');
+    //   wrapper.setData({playchime: true});
 
-      return wrapper.vm.$nextTick = () => {
-        expect(repeatSwitch.attributes('disabled')).to.equal('false');
-      };
-    });
-    
-    it('should disable chime select if playchime is false', () => {
-      const chimeSelect = wrapper.find('v-select-stub');
-      expect(chimeSelect.attributes('disabled')).to.equal('true');
-    });
-    
-    it('should not disable chime select if playchime is true', () => {
-      const chimeSelect = wrapper.find('v-select-stub');
-      wrapper.setData({playchime: true});
-
-      return wrapper.vm.$nextTick = () => {
-        expect(chimeSelect.attributes('disabled')).to.equal('false');
-      };
-    });
+    //   return wrapper.vm.$nextTick = () => {
+    //     expect(chimeSelect.attributes('disabled')).to.equal('false');
+    //   };
+    // });
   });
 
   describe('behavior', () => {
-    it('should handle autoplay getter', () => {
-      /* eslint-disable no-unused-vars */
-      const _ = wrapper.vm.autoplay;
-
-      return wrapper.vm.$nextTick = () => {
-        expect(actions.getAutoplay).to.be.called();
-      };
-    });
-
-    it('should handle autoplay setter', () => {
-      wrapper.setData({autoplay: true});
-
-      return wrapper.vm.$nextTick = () => {
-        expect(actions.setAutoplay).to.be.called();
-      };
-    });
-
-    it('should handle cycle getter', () => {
-      return wrapper.vm.$nextTick = () => {
-        expect(actions.getCycle).to.be.called();
-      };
-    });
-
-    it('should handle cycle setter', () => {
-      wrapper.setData({cycle: true});
-
-      return wrapper.vm.$nextTick = () => {
-        expect(actions.setCycle).to.be.called();
-      };
-    });
-    
     it('should handle chime getter', () => {
       return wrapper.vm.$nextTick = () => {
         expect(actions.getChime).to.be.called();

@@ -48,7 +48,6 @@ jobs:
           to: 's3://downtimer.io'
           arguments: |
             --acl public-read \
-          overwrite: true
  
 workflows:
   version: 2

@@ -37,6 +37,7 @@ export const actions = {
 
       if (timers.length) {
         store.commit(SET_ACTIVE_TIMER, timers[0].uid);
+        store.commit(UPDATE_TIMER_VALUE, timers[0].duration);
       }
     }
   },

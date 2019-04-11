@@ -4,7 +4,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/node:10-15
+      - image: circleci/node:10.15
     steps:
       - checkout
       - run:
@@ -36,7 +36,7 @@ jobs:
             - dist
   deploy:
     docker:
-      - image: circleci/node:10-15
+      - image: circleci/node:10.15
     steps:
       - run:
           name: Show current branch

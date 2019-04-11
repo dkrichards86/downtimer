@@ -36,7 +36,7 @@ jobs:
             - dist
   deploy:
     docker:
-      - image: circleci/node:10.15
+      - image: circleci/python:3.6.8-stretch
     steps:
       - run:
           name: Show current branch

@@ -1,7 +1,7 @@
 <script>
 import moment from 'moment';
 import { Line } from 'vue-chartjs';
-import { secToHHMMSS } from '../utils/helpers';
+import { timeFormat } from '../utils/helpers';
 
 export default {
   name: 'StatisticsTimers',
@@ -79,7 +79,7 @@ export default {
               const prefix = data.datasets[tooltipItem.datasetIndex].label;
               let value = tooltipItem.yLabel;
               if (tooltipItem.datasetIndex !== 2) {
-                value = secToHHMMSS(tooltipItem.yLabel);
+                value = timeFormat(tooltipItem.yLabel);
               }
 
               return `${prefix}: ${value}`;

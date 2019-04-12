@@ -1,4 +1,10 @@
-import moment from 'moment';
+/**
+ * Zero pad a string to a specified length.
+ *
+ * @param {number} num: number to pad
+ */
+export const zeroPad = (num, length = 2) => num.toString().padStart(length, '0');
+
 
 /**
  * Round milliseconds down to the nearest second
@@ -8,24 +14,32 @@ import moment from 'moment';
 export const roundTime = millis => Math.floor(millis / 1000);
 
 /**
- * Format seconds into mm:ss
+ * Format seconds into mm:ss with optional hour.
  *
  * @param {number} secs: seconds to format
  */
-export const timeFormat = secs => moment(secs * 1000).format('mm:ss');
-
-export const zeroPad = (num) => `0${num}`.slice(-2);
-
-export const secToHHMMSS = (secs) => {
+export const timeFormat = (secs) => {
   const hours = Math.floor(secs / 3600);
   const minutes = Math.floor((secs % 3600) / 60);
   const seconds = Math.floor(secs % 3600 % 60);
-  const hourString = hours > 0 ? `${zeroPad(hours)}:` : '';
 
-  return `${hourString}${zeroPad(minutes)}:${zeroPad(seconds)}`;
+  const components = [];
+
+  // Conditionally add hours. We don't want hours unless they actually exist.
+  if (hours > 0) {
+    components.push(zeroPad(hours));
+  }
+
+  components.push(zeroPad(minutes), zeroPad(seconds));
+
+  return components.join(':');
 };
 
-
+/**
+ * Strip Vuex's reactivity elements from an array of timers
+ *
+ * @param {Object} timers: timers to parse
+ */
 export const extractTimers = timers => timers.map(t => ({
   duration: t.duration,
   title: t.title,

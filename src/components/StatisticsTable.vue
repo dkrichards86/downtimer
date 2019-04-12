@@ -17,7 +17,7 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
-import { secToHHMMSS } from '../utils/helpers';
+import { timeFormat } from '../utils/helpers';
 
 const rounder = (value, decimals = 2) => {
   return Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`);
@@ -102,7 +102,7 @@ export default {
       });
     },
     timeFormat(secs) {
-      return secToHHMMSS(secs);
+      return timeFormat(secs);
     }
   }
 };

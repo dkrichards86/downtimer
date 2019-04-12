@@ -6,6 +6,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
+    "coverage:unit": "nyc npm run test:unit",
     "staging": "npm run build && npx http-server -a 0.0.0.0 -p 8081 dist"
   },
   "dependencies": {
@@ -40,6 +41,8 @@
     "eslint": "^5.14.0",
     "eslint-plugin-vue": "^5.2.1",
     "http-server": "^0.11.1",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "nyc": "^13.3.0",
     "sinon": "^7.2.3",
     "sinon-chai": "^3.3.0",
     "stylus": "^0.54.5",
@@ -92,5 +95,18 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "nyc": {
+    "reporter": [
+        "lcov",
+        "text",
+        "text-summary"
+    ],
+    "extension": [
+      ".js",
+      ".vue"
+    ],
+    "instrument": false,
+    "sourceMap": false
+  }
 }

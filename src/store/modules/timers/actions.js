@@ -23,7 +23,37 @@ const eventStorage = new Storage('events');
 
 const timer = new Timer();
 
+const logEvent = (runId, payload) => {
+  if (runId) {
+    const allEvents = eventStorage.load() || [];
+    const datetime = moment().format('X');
+    const event = payload;
+    const synced = false;
+
+    const eventData = {
+      datetime, event, runId, synced
+    };
+
+    allEvents.push(eventData);
+
+    eventStorage.save(allEvents);
+  }
+};
+
+const logRun = (runId, payload) => {
+  const allRuns = runStorage.load() || [];
+  const { duration } = payload;
+  const synced = false;
+  const runData = { runId, duration, synced };
+
+  allRuns.push(runData);
+  runStorage.save(allRuns);
+};
+
 export const actions = {
+  setCurrentRunId(store, payload) {
+    store.commit(SET_CURRENT_RUN_ID, payload);
+  },
   setActiveTimer(store, payload) {
     store.commit(SET_ACTIVE_TIMER, payload);
     const duration = find(store.state.timers, d => d.uid === payload);
@@ -86,44 +116,16 @@ export const actions = {
   },
   completeTimer(store) {
     store.dispatch('setTimerStatus', TIMER_STATUSES.EXPIRED);
-    store.dispatch('logEvent', 'expiry');
-  },
-  logEvent(store, payload) {
-    if (store.state.current_run_id) {
-      const allEvents = eventStorage.load() || [];
-      const datetime = moment().format('X');
-      const event = payload;
-      const runId = store.state.current_run_id;
-      const synced = false;
-
-      const eventData = {
-        datetime, event, runId, synced
-      };
-
-      allEvents.push(eventData);
-
-      eventStorage.save(allEvents);
-    }
-  },
-  logRun(store, payload) {
-    const allRuns = runStorage.load() || [];
-
-    const { duration } = payload;
-    const runId = store.state.current_run_id;
-    const synced = false;
-    const runData = { runId, duration, synced };
-
-    allRuns.push(runData);
-    runStorage.save(allRuns);
+    logEvent(store.state.current_run_id, 'expiry');
   },
   pauseTimer(store) {
     timer.stop();
     store.dispatch('setTimerStatus', TIMER_STATUSES.PAUSED);
-    store.dispatch('logEvent', 'pause');
+    logEvent(store.state.current_run_id, 'pause');
   },
   resetTimer(store) {
     if (store.state.timer_status !== TIMER_STATUSES.EXPIRED) {
-      store.dispatch('logEvent', 'reset');
+      logEvent(store.state.current_run_id, 'reset');
     }
 
     const uid = store.state.active_timer;
@@ -134,9 +136,11 @@ export const actions = {
     store.dispatch('setTimerStatus', TIMER_STATUSES.RESET);
   },
   resumeTimer(store) {
-    timer.start();
-    store.dispatch('setTimerStatus', TIMER_STATUSES.PLAYING);
-    store.dispatch('logEvent', 'resume');
+    if (store.state.timer_status === TIMER_STATUSES.PAUSED) {
+      timer.start();
+      store.dispatch('setTimerStatus', TIMER_STATUSES.PLAYING);
+      logEvent(store.state.current_run_id, 'resume');
+    }
   },
   startTimer(store) {
     const uid = store.state.active_timer;
@@ -147,12 +151,9 @@ export const actions = {
 
     timer.start();
     store.dispatch('setTimerStatus', TIMER_STATUSES.PLAYING);
-    store.dispatch('logEvent', 'start');
+    logEvent(store.state.current_run_id, 'start');
 
-    store.dispatch('logRun', duration);
-  },
-  setCurrentRunId(store, payload) {
-    store.commit(SET_CURRENT_RUN_ID, payload);
+    logRun(store.state.current_run_id, duration);
   },
   setRating(store, payload) {
     const allRuns = runStorage.load() || [];

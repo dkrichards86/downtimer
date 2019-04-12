@@ -20,7 +20,8 @@ export const state = {
   timer_status: -1,
   timer_value: 0,
   stats_window: 14,
-  device_id: "foobarbaz"
+  device_id: "foobarbaz",
+  current_run_id: null
 };
 
 export const actions = {
@@ -57,5 +58,6 @@ export const getters = {
   getTimerStatus: state => state.timer_status,
   getTimerValue: state => state.timer_value,
   getStatsWindow: state => state.stats_window,
-  getDeviceId: state => state.device_id
+  getDeviceId: state => state.device_id,
+  getCurrentRunId: state => state.current_run_id
 };

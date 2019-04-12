@@ -27,11 +27,5 @@ export const actions = {
     } else {
       store.dispatch('setDeviceId', shortid.generate());
     }
-
-    if (metadata && 'device_id' in metadata) {
-      store.commit(SET_DEVICE_ID, metadata.device_id);
-    } else {
-      store.dispatch('setDeviceId', shortid.generate());
-    }
   }
 };

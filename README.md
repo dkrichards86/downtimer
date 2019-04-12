@@ -2,6 +2,7 @@
 Downtimer is a browser based productivity timer.
 
 [![CircleCI](https://circleci.com/gh/downtimer/downtimer/tree/master.svg?style=svg)](https://circleci.com/gh/downtimer/downtimer/tree/master)
+[![codecov](https://codecov.io/gh/downtimer/downtimer/branch/master/graph/badge.svg)](https://codecov.io/gh/downtimer/downtimer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Usage

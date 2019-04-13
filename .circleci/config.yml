@@ -61,7 +61,7 @@ workflows:
   publish:
     jobs:
       - test
-      - build
+      - build:
           requires:
             - test
           filters:

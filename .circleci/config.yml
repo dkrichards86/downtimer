@@ -27,7 +27,7 @@ jobs:
           command: npm run lint
       - run: 
           name: Test
-          command: npm run test
+          command: npm run test:unit
       - codecov/upload:
           file: './coverage/lcov.info'
   build:

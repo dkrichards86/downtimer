@@ -5,8 +5,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit",
-    "coverage:unit": "nyc npm run test:unit",
+    "test:unit": "nyc vue-cli-service test:unit",
     "staging": "npm run build && npx http-server -a 0.0.0.0 -p 8081 dist"
   },
   "dependencies": {

@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.4
   codecov: codecov/codecov@1.0.4
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:10.15
     steps:
@@ -29,7 +29,11 @@ jobs:
           name: Test
           command: npm run test
       - codecov/upload:
-          file: 'coverage/lcov.info'
+          file: './coverage/lcov.info'
+  build:
+    docker:
+      - image: circleci/node:10.15
+    steps:
       - run:
           name: Build
           command: npm run build
@@ -56,7 +60,13 @@ workflows:
   version: 2
   publish:
     jobs:
+      - test
       - build
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
       - deploy:
           requires:
             - build

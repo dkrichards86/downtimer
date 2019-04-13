@@ -98,13 +98,10 @@
   ],
   "nyc": {
     "reporter": [
-        "lcov",
-        "text",
-        "text-summary"
+        "lcovonly"
     ],
-    "extension": [
-      ".js",
-      ".vue"
+    "include": [
+      "src/**/*.{js,vue}"
     ],
     "instrument": false,
     "sourceMap": false

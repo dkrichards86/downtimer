@@ -18,8 +18,8 @@
         </v-layout>
       </v-container>
     </v-content>
-    <reload-snackbar v-if="swupdate" />
-    <rating-snackbar v-if="getTimerStatus === 2"/>
+    <reload-snackbar v-if="showUpdate" />
+    <rating-snackbar v-if="showRating" />
   </v-app>
 </template>
 
@@ -42,7 +42,8 @@ export default {
     return {
       minute: 0,
       drawer: null,
-      swupdate: false,
+      showUpdate: false,
+      showRating: false,
       timer: null
     };
   },
@@ -58,6 +59,7 @@ export default {
       this.timer = this.getTimerById(newTimer);
     },
     getTimerStatus(status) {
+      this.showRating = false;
       if (status === TIMER_STATUSES.EXPIRED) {
         document.title = 'DownTimer.io';
 
@@ -69,6 +71,8 @@ export default {
         if (this.getPlayChime) {
           this.$alert_chime.play(this.getChime);
         }
+
+        this.showRating = true;
       } else if (status === TIMER_STATUSES.PAUSED) {
         document.title = 'DownTimer.io - Paused';
       }
@@ -114,7 +118,7 @@ export default {
       this.logEvent('exit');
     },
     showRefreshUI() {
-      this.swupdate = true;
+      this.showUpdate = true;
     }
   },
 };

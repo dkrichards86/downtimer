@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Vuetify from 'vuetify';
 import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
+import sinon from 'sinon';
 import SWReloadSnackbar from '@/components/SWReloadSnackbar';
 
 const { expect } = chai;
@@ -26,6 +27,19 @@ describe('SWReloadSnackbar.vue', () => {
     
     it('should render a v-btn', () => {
       expect(wrapper.contains('v-btn-stub')).to.equal(true);
+    });
+  });
+  
+  describe('behavior', () => { 
+    it('should refresh on click', () => {
+      wrapper.vm.refresh = sinon.stub();
+       
+      const btn = wrapper.find('v-btn-stub');
+      btn.trigger('click');
+
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.refresh).to.be.called();
+      };
     });
   });
 });

@@ -46,7 +46,7 @@ export const actions = {
   resumeTimer: sinon.stub(),
   resetTimer: sinon.stub(),
   completeTimer: sinon.stub(),
-  
+  setRating: sinon.stub()
 };
 
 export const getters = {

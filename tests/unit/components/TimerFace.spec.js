@@ -16,19 +16,13 @@ localVue.use(Vuetify);
 describe('TimerFace.vue', () => {
   let store;
   let wrapper;
-  let propsData;
 
   beforeEach(() => {
     store = new Vuex.Store({
       state, getters, actions
     });
-    
-    propsData = {
-      progress: 50,
-      duration: 10
-    };
 
-    wrapper = shallowMount(TimerFace, { localVue, store, propsData });
+    wrapper = shallowMount(TimerFace, { localVue, store });
   });
 
   describe('rendering', () => {

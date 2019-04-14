@@ -12,6 +12,7 @@ export default {
   name: 'SWReloadSnackbar',
   methods: {
     refresh() {
+      /* istanbul ignore next */
       window.location.reload();
     }
   }

@@ -9,6 +9,8 @@ import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
 import Wrapper from '@/layouts/Wrapper';
 import WrapperSidebar from '@/components/WrapperSidebar';
+import SWReloadSnackbar from '@/components/SWReloadSnackbar';
+import TimerRatingSnackbar from '@/components/TimerRatingSnackbar';
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -40,6 +42,10 @@ describe('Wrapper.vue', () => {
     it('should render v-toolbar', () => {
       expect(wrapper.contains('v-toolbar-stub')).to.equal(true);
     });
+    
+    it('should render v-navigation-drawer', () => {
+      expect(wrapper.contains('v-navigation-drawer-stub')).to.equal(true);
+    });
 
     it('should render a Sidebar', () => {
       expect(wrapper.contains(WrapperSidebar)).to.equal(true);
@@ -47,6 +53,24 @@ describe('Wrapper.vue', () => {
 
     it('should render a v-content', () => {
       expect(wrapper.contains('v-content-stub')).to.equal(true);
+    });
+    
+    it('should conditionally render a SWReloadSnackbar', () => {
+      expect(wrapper.contains(SWReloadSnackbar)).to.equal(false);
+      
+      wrapper.setData({swUpdate: true});
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.contains(SWReloadSnackbar)).to.equal(true);
+      };
+    });
+    
+    it('should conditionally render a TimerRatingSnackbar', () => {
+      expect(wrapper.contains(TimerRatingSnackbar)).to.equal(false);
+      
+      wrapper.setData({showRating: true});
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.contains(TimerRatingSnackbar)).to.equal(true);
+      };
     });
   });
 

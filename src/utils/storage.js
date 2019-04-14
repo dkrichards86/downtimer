@@ -1,5 +1,5 @@
-// Simple localStorage polyfill. We don't expect this to be used outside of
-// testing
+// Simple localStorage polyfill. We don't expect this to be used outside of testing
+/* istanbul ignore next */
 if (!('localStorage' in window)) {
   window.localStorage = {
     _data: {},

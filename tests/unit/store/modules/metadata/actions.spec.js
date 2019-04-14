@@ -1,6 +1,8 @@
 import Vuex from 'vuex';
 import { expect } from 'chai';
-import { actions } from '@/store/modules/metadata/actions';
+import { actions as metadataActions } from '@/store/modules/metadata/actions';
+import { actions as settingsActions } from '@/store/modules/settings/actions';
+import { actions as timerActions } from '@/store/modules/timers/actions';
 import { mutations } from '@/store/modules/metadata/mutations';
 import { state, getters } from '../../../__mocks__/store';
 import { Storage } from '@/utils/storage';
@@ -13,8 +15,11 @@ const metadataStorage = new Storage('metadata');
 
 describe('store/modules/metadata/actions.js', () => {
   let store;
+  let actions;
 
   beforeEach(() => {
+    actions = Object.assign({}, metadataActions, settingsActions, timerActions);
+    
     store = new Vuex.Store({
       state: cloneDeep(state), getters, actions, mutations
     });
@@ -52,11 +57,11 @@ describe('store/modules/metadata/actions.js', () => {
   });
   
   // describe('hydrate', () => {
-  //   it('should hydrate setting', () => {
+  //   it('should hydrate store', () => {
   //     const addedTimer = [{
-  //       uid: 'foo',
+  //       uid: 'baz',
   //       title: "test timer",
-  //       duration: 1500
+  //       duration: 2400
   //     }];
       
   //     timerStorage.save(addedTimer);
@@ -68,7 +73,7 @@ describe('store/modules/metadata/actions.js', () => {
   //     metadataStorage.add({ device_id: "foobarbaz" });
 
   //     actions.hydrate(store);
-      
+
   //     const timers = getters.getTimers(store.state);
   //     expect(timers).to.deep.equal(addedTimer);
   //     expect(timers.length).to.equal(1);

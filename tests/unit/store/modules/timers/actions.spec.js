@@ -45,10 +45,18 @@ describe('store/modules/timers/actions.js', () => {
   
   describe('hydrateTimers', () => {
     it('should hydrate timers', () => {
-       const addedTimer = [{
-        uid: 'foo',
+      actions.hydrateTimers(store);
+      
+      const timers = getters.getTimers(store.state);
+      expect(timers).to.deep.equal(state.timers);
+      expect(timers.length).to.equal(2);
+    });
+    
+    it('should hydrate timers from storage', () => {
+      const addedTimer = [{
+        uid: 'baz',
         title: "test timer",
-        duration: 1500
+        duration: 2400
       }];
       
       timerStorage.save(addedTimer);

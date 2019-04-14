@@ -4,6 +4,7 @@ import Vuetify from 'vuetify';
 import * as chai from 'chai';
 import sinonChai from 'sinon-chai';
 import TimerRatingSnackbar from '@/components/TimerRatingSnackbar';
+import { state, actions, getters } from '../__mocks__/store';
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -13,10 +14,15 @@ localVue.use(Vuex);
 localVue.use(Vuetify);
 
 describe('TimerRatingSnackbar.vue', () => {
+  let store;
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallowMount(TimerRatingSnackbar, { localVue });
+    store = new Vuex.Store({
+      state, getters, actions
+    });
+
+    wrapper = shallowMount(TimerRatingSnackbar, { localVue, store });
   });
 
   describe('rendering', () => {
@@ -26,6 +32,16 @@ describe('TimerRatingSnackbar.vue', () => {
     
     it('should render a v-btn', () => {
       expect(wrapper.contains('v-btn-stub')).to.equal(true);
+    });
+  });
+  
+  describe('behavior', () => {
+    it('should submit a timer rating', () => {
+      wrapper.vm.rateTimer();
+
+      return wrapper.vm.$nextTick = () => {
+        expect(actions.setRating).to.be.called();
+      };
     });
   });
 });

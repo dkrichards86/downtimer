@@ -97,7 +97,8 @@
   ],
   "nyc": {
     "reporter": [
-        "lcovonly"
+        "lcovonly",
+        "text"
     ],
     "include": [
       "src/**/*.{js,vue}"

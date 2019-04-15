@@ -40,7 +40,7 @@ import WrapperSidebarTimerList from './WrapperSidebarTimerList.vue';
 export default {
   name: 'WrapperSidebar',
   components: {
-    'timer-list': WrapperSidebarTimerList
-  }
+    'timer-list': WrapperSidebarTimerList,
+  },
 };
 </script>

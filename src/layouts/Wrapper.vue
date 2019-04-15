@@ -18,8 +18,8 @@
         </v-layout>
       </v-container>
     </v-content>
-    <reload-snackbar v-if="swupdate" />
-    <rating-snackbar v-if="getTimerStatus === 2"/>
+    <reload-snackbar v-if="showUpdate" />
+    <rating-snackbar v-if="showRating" />
   </v-app>
 </template>
 
@@ -36,57 +36,41 @@ export default {
   components: {
     sidebar: WrapperSidebar,
     'reload-snackbar': SWReloadSnackbar,
-    'rating-snackbar': TimerRatingSnackbar
+    'rating-snackbar': TimerRatingSnackbar,
   },
   data() {
     return {
       minute: 0,
       drawer: null,
-      swupdate: false,
-      timer: null
+      showUpdate: false,
+      showRating: false,
+      timer: null,
     };
   },
   computed: {
     ...mapGetters([
       'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById',
-      'getTimerStatus', 'getTimerValue'
+      'getTimerStatus', 'getTimerValue',
     ]),
   },
   watch: {
     getActiveTimer(newTimer) {
-      this.last_timer = Object.assign({}, this.timer);
-      this.timer = this.getTimerById(newTimer);
+      this.setTimer(this.getTimerById(newTimer));
     },
     getTimerStatus(status) {
-      if (status === TIMER_STATUSES.EXPIRED) {
-        document.title = 'DownTimer.io';
-
-        this.$native_notification.notify("Time's Up!", {
-          body: `Your timer '${this.timer.title}' has finished.`,
-          timeout: 4000,
-        });
-
-        if (this.getPlayChime) {
-          this.$alert_chime.play(this.getChime);
-        }
-      } else if (status === TIMER_STATUSES.PAUSED) {
-        document.title = 'DownTimer.io - Paused';
-      }
+      this.updateContent(status);
     },
     getTimerValue(ms) {
       this.setTitle(ms);
-    }
+    },
   },
   created() {
     this.hydrate();
     this.initTimer();
-    this.timer = this.getTimerById(this.getActiveTimer);
+    this.setTimer(this.getTimerById(this.getActiveTimer));
 
     if (this.$native_notification.hasDefaultPermission()) {
-      this.$native_notification.notify('DownTimer Notification', {
-        body: 'This is where DownTimer notifications will appear.',
-        timeout: 4000
-      });
+      this.showInitialNotification();
     }
 
     window.addEventListener('beforeunload', this.exitHandler);
@@ -99,23 +83,64 @@ export default {
   methods: {
     ...mapActions([
       'hydrate', 'initTimer', 'startTimer',
-      'setTimerStatus', 'logEvent'
+      'setTimerStatus', 'logEvent',
     ]),
     setTitle(ms) {
       const mmt = moment(ms * 1000);
       const minute = mmt.minute();
 
       if (minute !== this.minute) {
-        document.title = `DownTimer.io - ${this.timer.title} (${minute}min)`;
+        this.setDocumentTitle(`DownTimer.io - ${this.timer.title} (${minute}min)`);
         this.minute = minute;
       }
     },
     exitHandler() {
+      /* istanbul ignore next */
       this.logEvent('exit');
     },
     showRefreshUI() {
-      this.swupdate = true;
-    }
+      this.showUpdate = true;
+    },
+    showInitialNotification() {
+      /* istanbul ignore next */
+      this.$native_notification.notify('DownTimer Notification', {
+        body: 'This is where DownTimer notifications will appear.',
+        timeout: 4000,
+      });
+    },
+    showCompletionNotification() {
+      /* istanbul ignore next */
+      this.$native_notification.notify("Time's Up!", {
+        body: `Your timer '${this.timer.title}' has finished.`,
+        timeout: 4000,
+      });
+    },
+    playCompletionChime() {
+      /* istanbul ignore next */
+      this.$alert_chime.play(this.getChime);
+    },
+    setTimer(timer) {
+      this.timer = timer;
+    },
+    setDocumentTitle(title) {
+      document.title = title;
+    },
+    updateContent(status) {
+      this.showRating = false;
+      if (status === TIMER_STATUSES.EXPIRED) {
+        this.setDocumentTitle('DownTimer.io');
+
+        this.showCompletionNotification();
+
+        if (this.getPlayChime) {
+          this.playCompletionChime();
+        }
+
+        this.showRating = true;
+      } else if (status === TIMER_STATUSES.PAUSED) {
+        this.setDocumentTitle('DownTimer.io - Paused');
+      }
+    },
   },
 };
 </script>

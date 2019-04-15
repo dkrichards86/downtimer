@@ -24,15 +24,15 @@ export default {
     return {
       duration: {
         title: '',
-        duration: 0
+        duration: 0,
       },
       progress: 0,
-      countdown: 0
+      countdown: 0,
     };
   },
   computed: {
     ...mapGetters([
-      'getActiveTimer', 'getTimerById', 'getTimerValue'
+      'getActiveTimer', 'getTimerById', 'getTimerValue',
     ]),
     formattedDuration() {
       return timeFormat(this.countdown);
@@ -40,23 +40,39 @@ export default {
   },
   watch: {
     getActiveTimer(newTimerId) {
-      const duration = this.getTimerById(newTimerId);
-      this.duration = duration;
-      this.progress = 0;
+      this.changeTimer(this.getTimerById(newTimerId));
     },
     getTimerValue(newTime) {
-      this.countdown = newTime;
-      const progress = (this.duration.duration - newTime) / this.duration.duration;
-      this.progress = progress * 100;
-    }
+      this.changeTimerValue(newTime);
+    },
   },
   created() {
     const duration = this.getTimerById(this.getActiveTimer);
     const progress = (duration.duration - this.getTimerValue) / duration.duration;
-    this.duration = duration;
-    this.progress = progress * 100;
-    this.countdown = duration.duration;
-  }
+    this.setDuration(duration);
+    this.setProgress(progress);
+    this.setCountdown(duration.duration);
+  },
+  methods: {
+    changeTimer(duration) {
+      this.setDuration(duration);
+      this.setProgress(0);
+    },
+    changeTimerValue(time) {
+      this.setCountdown(time);
+      const progress = (this.duration.duration - time) / this.duration.duration;
+      this.setProgress(progress);
+    },
+    setProgress(progress) {
+      this.progress = progress * 100;
+    },
+    setDuration(duration) {
+      this.duration = duration;
+    },
+    setCountdown(countdown) {
+      this.countdown = countdown;
+    },
+  },
 };
 </script>
 

@@ -33,12 +33,12 @@ import WrapperSidebarTimerListItem from './WrapperSidebarTimerListItem.vue';
 export default {
   name: 'WrapperSidebarTimerList',
   components: {
-    'timer-list-item': WrapperSidebarTimerListItem
+    'timer-list-item': WrapperSidebarTimerListItem,
   },
   computed: {
     ...mapGetters([
-      'getTimers'
+      'getTimers',
     ]),
-  }
+  },
 };
 </script>

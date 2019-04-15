@@ -54,4 +54,48 @@ describe('WrapperSidebarTimerListItem.vue', () => {
       expect(wrapper.contains('v-list-tile-action-stub')).to.equal(true);
     });
   });
+  
+  describe('behavior', () => {
+    it('should format time properly', () => {
+      expect(wrapper.vm.formattedDuration(1200)).to.equal('20:00');
+    });
+    
+    it('should return active timer status', () => {
+      expect(wrapper.vm.isActive).to.be.true;
+      
+      const newTimer = {
+        uid: 'bar',
+        title: "test timer",
+        duration: 1200
+      };
+      
+      wrapper.setProps({timer: newTimer});
+
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.isActive).to.be.false;
+      };
+    });
+    
+    it('should set minutes and seconds on timer change', () => {
+      const newTimer = {
+        uid: 'bar',
+        title: "new timer",
+        duration: 1205
+      };
+      
+      wrapper.setProps({timer: newTimer});
+
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.title).to.equal('new timer');
+        expect(wrapper.vm.minutes).to.equal(20);
+        expect(wrapper.vm.seconds).to.equal(5);
+      };
+    });
+    
+    it('should set minutes and seconds when calling getMinSec', () => {
+      wrapper.vm.getMinSec(1205);
+      expect(wrapper.vm.minutes).to.equal(20);
+      expect(wrapper.vm.seconds).to.equal(5);
+    });
+  });
 });

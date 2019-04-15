@@ -17,10 +17,30 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
-import { secToHHMMSS } from '../utils/helpers';
+import { timeFormat, rounder } from '../utils/helpers';
 
-const rounder = (value, decimals = 2) => {
-  return Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`);
+const HEADERS = [
+  {
+    text: 'Date', value: 'date', sortable: false,
+  },
+  {
+    text: 'Timers Started', value: 'starts', align: 'center',
+  },
+  {
+    text: 'Timers Completed', value: 'completions', align: 'center',
+  },
+  {
+    text: '% Completed', value: 'percentage', align: 'center',
+  },
+  {
+    text: '# Interruptions', value: 'interruptions', align: 'center',
+  },
+];
+
+const PER_PAGE_MAP = {
+  7: [7],
+  14: [7, 14],
+  28: [7, 14, 28],
 };
 
 export default {
@@ -28,52 +48,30 @@ export default {
   props: {
     stats: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       items: [],
-      headers: [
-        {
-          text: 'Date', value: 'date', sortable: false,
-        },
-        {
-          text: 'Timers Started', value: 'starts', align: 'center'
-        },
-        {
-          text: 'Timers Completed', value: 'completions', align: 'center'
-        },
-        {
-          text: '% Completed', value: 'percentage', align: 'center'
-        },
-        {
-          text: '# Interruptions', value: 'interruptions', align: 'center'
-        }
-      ]
+      headers: HEADERS,
     };
   },
   computed: {
     ...mapGetters([
-      'getStatsWindow'
+      'getStatsWindow',
     ]),
     perPage() {
-      const perPageMap = {
-        7: [7],
-        14: [7, 14],
-        28: [7, 14, 28]
-      };
-
-      return perPageMap[this.getStatsWindow];
-    }
+      return PER_PAGE_MAP[this.getStatsWindow];
+    },
   },
   watch: {
     stats: {
       handler: function () {
         this.setData();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   mounted() {
     this.setData();
@@ -97,13 +95,13 @@ export default {
           starts: starts,
           completions: completions,
           percentage: percentage,
-          interruptions: data.interruptions
+          interruptions: data.interruptions,
         };
       });
     },
     timeFormat(secs) {
-      return secToHHMMSS(secs);
-    }
-  }
+      return timeFormat(secs);
+    },
+  },
 };
 </script>

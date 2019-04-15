@@ -5,7 +5,7 @@ import {
   SET_TIMERS,
   SET_TIMER_STATUS,
   UPDATE_TIMER_VALUE,
-  SET_CURRENT_RUN_ID
+  SET_CURRENT_RUN_ID,
 } from './mutation_types';
 
 export const mutations = {
@@ -23,5 +23,5 @@ export const mutations = {
   },
   [SET_CURRENT_RUN_ID](state, payload) {
     Vue.set(state, 'current_run_id', payload);
-  }
+  },
 };

@@ -13,7 +13,7 @@ export default {
   name: 'Timer',
   components: {
     'timer-face': TimerFace,
-    'timer-controls': TimerControls
-  }
+    'timer-controls': TimerControls,
+  },
 };
 </script>

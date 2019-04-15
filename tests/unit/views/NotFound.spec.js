@@ -28,7 +28,8 @@ describe('NotFound.vue', () => {
     });
     
     it('should display content in v-card-text', () => {
-      expect(wrapper.findAll('v-card-text-stub').length).to.equal(1);
+      const text = wrapper.find('v-card-text-stub');
+      expect(text.text().trim()).to.equal('That page cannot be found.');
     });
 
     it('should display actions', () => {

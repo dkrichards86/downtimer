@@ -15,16 +15,16 @@ export default {
   name: 'TimerRatingSnackbar',
   data() {
     return {
-      rating: 3
+      rating: 3,
     };
   },
   methods: {
     ...mapActions([
-      'setRating'
+      'setRating',
     ]),
     rateTimer() {
       this.setRating(this.rating);
-    }
-  }
+    },
+  },
 };
 </script>

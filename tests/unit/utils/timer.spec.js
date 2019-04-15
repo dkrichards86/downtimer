@@ -86,6 +86,29 @@ describe('utils/timer', () => {
       }
     }, 1100 );
   });
+  
+  it('should not update a stopped timer', (done) => {
+    const cb = () => {};
+    const tickCB = sinon.stub();
+    timer.setDuration(120);
+    timer.setTickCallback(tickCB);
+    timer.setCompletionCallback(cb);
+    
+    timer._running = false;
+    timer.updateTime();
+
+    setTimeout( () => {
+      try {
+        expect(tickCB).to.not.be.called;
+        expect(timer._previousTime).to.equal(0);
+        expect(timer.timeRemaining).to.equal(timer.initialDuration);
+        done();
+      }
+      catch(err) {
+        done(err);
+      }
+    }, 1100 );
+  });
 
   it('should expire a timer', (done) => {
     const completionCB = sinon.stub();

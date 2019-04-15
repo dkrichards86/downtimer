@@ -6,7 +6,7 @@
           <v-card-title class="title">
             Daily Usage
           </v-card-title>
-          <statistics-timers :style="{height: '180px'}" :stats="stats" />
+          <statistics-chart :style="{height: '180px'}" :stats="stats" />
         </v-card-text>
       </v-card>
       <v-card>
@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex';
 import groupBy from 'lodash/groupBy';
 import find from 'lodash/find';
 
-import StatisticsTimers from '../components/StatisticsTimers';
+import StatisticsChart from '../components/StatisticsChart';
 import StatisticsTable from '../components/StatisticsTable';
 
 import { Storage } from '../utils/storage';
@@ -48,52 +48,40 @@ const TRANSITIONS = {
   pause: ['resume', 'reset'],
   exit: [],
   reset: ['start'],
-  '': ['start']
+  '': ['start'],
 };
 
 export default {
   name: 'Statistics',
   components: {
-    'statistics-timers': StatisticsTimers,
-    'statistics-table': StatisticsTable
+    'statistics-chart': StatisticsChart,
+    'statistics-table': StatisticsTable,
   },
   data() {
     return {
       runs: {},
       events: [],
       stats: {},
-      hasData: false
+      hasData: false,
     };
   },
   computed: {
     ...mapGetters([
-      'getStatsWindow', 'getTimerStatus'
+      'getTimerStatus', 'getStatsWindow',
     ]),
   },
   mounted() {
-    this.parseData();
+    const { runs, events } = this.loadData();
+    this.parseData(runs, events);
   },
   watch: {
-    getStatsWindow() {
-      this.parseData();
-    },
     getTimerStatus() {
-      this.parseData();
-    }
+      const { runs, events } = this.loadData();
+      this.parseData(runs, events);
+    },
   },
   methods: {
-    parseData() {
-      const runs = runStorage.load();
-      const events = eventStorage.load();
-      this.hasData = false;
-
-      if (!runs || !events) {
-        return;
-      }
-
-      runs.forEach(r => { this.runs[r.runId] = r.duration; });
-      this.events = events;
-
+    buildDataSkel() {
       const today = moment();
       const statsData = {};
       const dayShape = { started: 0, completed: 0, interruptions: 0 };
@@ -101,7 +89,35 @@ export default {
       statsData[today.startOf('day')] = { ...dayShape };
       [...Array(this.getStatsWindow - 1)].forEach(() => { statsData[today.subtract(1, 'd').startOf('day')] = { ...dayShape }; });
 
-      const groups = groupBy(this.events.filter(e => e.runId), (e) => moment(e.datetime * 1000).startOf('day'));
+      return statsData;
+    },
+    unpackRuns(runs) {
+      const runData = {};
+      runs.forEach(r => { runData[r.runId] = r.duration; });
+
+      return runData;
+    },
+    getGroups(events) {
+      return groupBy(events.filter(e => e.runId), (e) => moment(e.datetime * 1000).startOf('day'));
+    },
+    loadData() {
+      const runs = runStorage.load();
+      const events = eventStorage.load();
+
+      return { runs, events };
+    },
+    parseData(runs, events) {
+      this.hasData = false;
+
+      if (!runs || !events) {
+        return;
+      }
+
+      this.runs = this.unpackRuns(runs);
+      this.events = events;
+
+      const statsData = this.buildDataSkel();
+      const groups = this.getGroups(this.events);
 
       Object.entries(groups).forEach((group) => {
         const [groupDate, groupEvents] = [...group];
@@ -148,7 +164,7 @@ export default {
       });
 
       this.stats = statsData;
-    }
-  }
+    },
+  },
 };
 </script>

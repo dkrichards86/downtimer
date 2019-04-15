@@ -1,16 +1,43 @@
 <script>
 import moment from 'moment';
 import { Line } from 'vue-chartjs';
-import { secToHHMMSS } from '../utils/helpers';
+import { timeFormat } from '../utils/helpers';
+
+const X_AXES = [
+  {
+    type: 'time',
+    time: {
+      unit: 'day',
+    },
+  },
+];
+
+const Y_AXES = [
+  {
+    display: false,
+  },
+];
+
+const SCALES = {
+  xAxes: X_AXES,
+  yAxes: Y_AXES,
+};
+
+const LEGEND = {
+  display: false,
+};
+
+const COMPLETED_COLOR = '#34495E';
+const SCHEDULED_COLOR = '#B71C1C';
 
 export default {
-  name: 'StatisticsTimers',
+  name: 'StatisticsChart',
   mixins: [Line],
   props: {
     stats: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     stats: {
@@ -18,8 +45,8 @@ export default {
         const { starts, completions } = this.setData();
         this.render(starts, completions);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   mounted() {
     const { starts, completions } = this.setData();
@@ -47,29 +74,26 @@ export default {
         {
           label: 'Time Completed',
           data: completions,
-          borderColor: '#34495E',
-          backgroundColor: '#34495E',
+          borderColor: COMPLETED_COLOR,
+          backgroundColor: COMPLETED_COLOR,
           fill: false,
           pointStyle: 'line',
-          lineTension: 0
+          lineTension: 0,
         },
         {
           label: 'Time Scheduled',
           data: starts,
-          borderColor: '#B71C1C',
-          backgroundColor: '#B71C1C',
+          borderColor: SCHEDULED_COLOR,
+          backgroundColor: SCHEDULED_COLOR,
           fill: false,
           pointStyle: 'line',
-          lineTension: 0
-        }
+          lineTension: 0,
+        },
       ];
 
       const datacollection = { datasets };
 
       const options = {
-        legend: {
-          display: false
-        },
         tooltips: {
           intersect: false,
           mode: 'index',
@@ -79,32 +103,21 @@ export default {
               const prefix = data.datasets[tooltipItem.datasetIndex].label;
               let value = tooltipItem.yLabel;
               if (tooltipItem.datasetIndex !== 2) {
-                value = secToHHMMSS(tooltipItem.yLabel);
+                value = timeFormat(tooltipItem.yLabel);
               }
 
               return `${prefix}: ${value}`;
-            }
-          }
+            },
+          },
         },
-        scales: {
-          xAxes: [{
-            type: 'time',
-            time: {
-              unit: 'day'
-            }
-          }],
-          yAxes: [
-            {
-              display: false
-            }
-          ]
-        },
+        legend: LEGEND,
+        scales: SCALES,
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
       };
 
       this.renderChart(datacollection, options);
-    }
-  }
+    },
+  },
 };
 </script>

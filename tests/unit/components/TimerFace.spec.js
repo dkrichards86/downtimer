@@ -42,4 +42,55 @@ describe('TimerFace.vue', () => {
       expect(wrapper.contains('v-progress-linear-stub')).to.equal(true);
     });
   });
+  
+  describe('behavior', () => {
+    it('should change a timer', () => {
+      const newDuration = {
+        uid: 'baz',
+        title: "new duration",
+        duration: 2000
+      };
+  
+      wrapper.vm.changeTimer(newDuration);
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.progress).to.equal(0);
+        expect(wrapper.vm.duration).to.deep.equal(newDuration);
+      };
+    });
+    
+    it('should change a timer value', () => {
+      wrapper.vm.changeTimerValue(300);
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.coundown).to.equal(300);
+        expect(wrapper.vm.progess).to.equal(80);
+      };
+    });
+    
+    it('should set progress', () => {
+      wrapper.vm.setProgress(0.3);
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.progess).to.equal(30);
+      };
+    });
+    
+    it('should set duration', () => {
+      const newDuration = {
+        uid: 'baz',
+        title: "new duration",
+        duration: 2000
+      };
+      
+      wrapper.vm.setDuration(newDuration);
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.duration).to.deep.equal(newDuration);
+      };
+    });
+    
+    it('should set countdown', () => {
+      wrapper.vm.setCountdown(300);
+      return wrapper.vm.$nextTick = () => {
+        expect(wrapper.vm.coundown).to.equal(300);
+      };
+    });
+  });
 });

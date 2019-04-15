@@ -1,4 +1,4 @@
-import { timeFormat, roundTime, zeroPad, extractTimers } from '@/utils/helpers';
+import { timeFormat, roundTime, zeroPad, extractTimers, rounder } from '@/utils/helpers';
 import { expect } from 'chai';
 
 describe('utils/helpers', () => {
@@ -59,6 +59,13 @@ describe('utils/helpers', () => {
 
       expect(extractTimers(cleanTimers)).to.deep.equal(cleanTimers);
       expect(extractTimers(dirtyTimers)).to.deep.equal(cleanTimers);
+    });
+  });
+  
+  describe('rounder', () => {
+    it('should round properly', () => {
+      expect(rounder(1.25484)).to.equal(1.25);
+      expect(rounder(0.846541, 4)).to.equal(0.8465);
     });
   });
 });

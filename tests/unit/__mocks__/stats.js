@@ -7,3 +7,13 @@ export const stats = {
   "Jan 11": { started: 200, completed: 120, interruptions: 2 },
   "Jan 12": { started: 100, completed: 80, interruptions: 0 },
 };
+
+export const runs = [
+  {"runId":"0ewp13X7Q","duration":1800,"synced":false}
+];
+
+export const events = [
+  {"datetime":"1554312952","event":"start","runId":"0ewp13X7Q","synced":false},
+  {"datetime":"1554314752","event":"expiry","runId":"0ewp13X7Q","synced":false},
+  {"datetime":"1554315197","event":"exit","runId":"0ewp13X7Q","synced":false}
+];

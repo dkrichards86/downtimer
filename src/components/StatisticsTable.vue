@@ -17,10 +17,30 @@
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
-import { timeFormat } from '../utils/helpers';
+import { timeFormat, rounder } from '../utils/helpers';
 
-const rounder = (value, decimals = 2) => {
-  return Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`);
+const HEADERS = [
+  {
+    text: 'Date', value: 'date', sortable: false,
+  },
+  {
+    text: 'Timers Started', value: 'starts', align: 'center'
+  },
+  {
+    text: 'Timers Completed', value: 'completions', align: 'center'
+  },
+  {
+    text: '% Completed', value: 'percentage', align: 'center'
+  },
+  {
+    text: '# Interruptions', value: 'interruptions', align: 'center'
+  }
+];
+
+const PER_PAGE_MAP = {
+  7: [7],
+  14: [7, 14],
+  28: [7, 14, 28]
 };
 
 export default {
@@ -34,23 +54,7 @@ export default {
   data() {
     return {
       items: [],
-      headers: [
-        {
-          text: 'Date', value: 'date', sortable: false,
-        },
-        {
-          text: 'Timers Started', value: 'starts', align: 'center'
-        },
-        {
-          text: 'Timers Completed', value: 'completions', align: 'center'
-        },
-        {
-          text: '% Completed', value: 'percentage', align: 'center'
-        },
-        {
-          text: '# Interruptions', value: 'interruptions', align: 'center'
-        }
-      ]
+      headers: HEADERS
     };
   },
   computed: {
@@ -58,13 +62,7 @@ export default {
       'getStatsWindow'
     ]),
     perPage() {
-      const perPageMap = {
-        7: [7],
-        14: [7, 14],
-        28: [7, 14, 28]
-      };
-
-      return perPageMap[this.getStatsWindow];
+      return PER_PAGE_MAP[this.getStatsWindow];
     }
   },
   watch: {

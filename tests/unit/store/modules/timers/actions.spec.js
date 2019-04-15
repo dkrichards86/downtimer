@@ -207,6 +207,7 @@ describe('store/modules/timers/actions.js', () => {
       expect(getters.getTimerValue(store.state)).to.equal(1500);
       
       const events = eventStorage.load();
+      
       expect(last(events).event).to.equal('reset');
     });
   });

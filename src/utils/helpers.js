@@ -45,3 +45,13 @@ export const extractTimers = timers => timers.map(t => ({
   title: t.title,
   uid: t.uid
 }));
+
+/**
+ * Round a number to a specified length
+ *
+ * @param {number} value: number to round
+ * @param {decimals} value: length to round
+ */
+export const rounder = (value, decimals = 2) => {
+  return Number(`${Math.round(`${value}e${decimals}`)}e-${decimals}`);
+};

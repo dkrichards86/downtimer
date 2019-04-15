@@ -55,27 +55,10 @@ export default {
   },
   watch: {
     getActiveTimer(newTimer) {
-      this.last_timer = Object.assign({}, this.timer);
-      this.timer = this.getTimerById(newTimer);
+      this.setTimer(this.getTimerById(newTimer));
     },
     getTimerStatus(status) {
-      this.showRating = false;
-      if (status === TIMER_STATUSES.EXPIRED) {
-        document.title = 'DownTimer.io';
-
-        this.$native_notification.notify("Time's Up!", {
-          body: `Your timer '${this.timer.title}' has finished.`,
-          timeout: 4000,
-        });
-
-        if (this.getPlayChime) {
-          this.$alert_chime.play(this.getChime);
-        }
-
-        this.showRating = true;
-      } else if (status === TIMER_STATUSES.PAUSED) {
-        document.title = 'DownTimer.io - Paused';
-      }
+      this.updateContent(status);
     },
     getTimerValue(ms) {
       this.setTitle(ms);
@@ -84,13 +67,10 @@ export default {
   created() {
     this.hydrate();
     this.initTimer();
-    this.timer = this.getTimerById(this.getActiveTimer);
+    this.setTimer(this.getTimerById(this.getActiveTimer));
 
     if (this.$native_notification.hasDefaultPermission()) {
-      this.$native_notification.notify('DownTimer Notification', {
-        body: 'This is where DownTimer notifications will appear.',
-        timeout: 4000
-      });
+      this.showInitialNotification();
     }
 
     window.addEventListener('beforeunload', this.exitHandler);
@@ -110,17 +90,58 @@ export default {
       const minute = mmt.minute();
 
       if (minute !== this.minute) {
-        document.title = `DownTimer.io - ${this.timer.title} (${minute}min)`;
+        this.setDocumentTitle(`DownTimer.io - ${this.timer.title} (${minute}min)`);
         this.minute = minute;
       }
     },
     exitHandler() {
+      /* istanbul ignore next */
       this.logEvent('exit');
     },
     showRefreshUI() {
       this.showUpdate = true;
+    },
+    showInitialNotification() {
+      /* istanbul ignore next */
+      this.$native_notification.notify('DownTimer Notification', {
+        body: 'This is where DownTimer notifications will appear.',
+        timeout: 4000
+      });
+    },
+    showCompletionNotification() {
+      /* istanbul ignore next */
+      this.$native_notification.notify("Time's Up!", {
+        body: `Your timer '${this.timer.title}' has finished.`,
+        timeout: 4000,
+      });
+    },
+    playCompletionChime() {
+      /* istanbul ignore next */
+      this.$alert_chime.play(this.getChime);
+    },
+    setTimer(timer) {
+      this.timer = timer;
+    },
+    setDocumentTitle(title) {
+      document.title = title;
+    },
+    updateContent(status) {
+      this.showRating = false;
+      if (status === TIMER_STATUSES.EXPIRED) {
+        this.setDocumentTitle('DownTimer.io');
+
+        this.showCompletionNotification();
+
+        if (this.getPlayChime) {
+          this.playCompletionChime();
+        }
+
+        this.showRating = true;
+      } else if (status === TIMER_STATUSES.PAUSED) {
+        this.setDocumentTitle('DownTimer.io - Paused');
+      }
     }
-  },
+  }
 };
 </script>
 

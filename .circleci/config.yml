@@ -8,9 +8,6 @@ jobs:
       - image: circleci/node:10.15
     steps:
       - checkout
-      - run:
-          name: Show current branch
-          command: echo ${CIRCLE_BRANCH}
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
@@ -34,6 +31,7 @@ jobs:
     docker:
       - image: circleci/node:10.15
     steps:
+      - checkout
       - run:
           name: Build
           command: npm run build

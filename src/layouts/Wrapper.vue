@@ -36,7 +36,7 @@ export default {
   components: {
     sidebar: WrapperSidebar,
     'reload-snackbar': SWReloadSnackbar,
-    'rating-snackbar': TimerRatingSnackbar
+    'rating-snackbar': TimerRatingSnackbar,
   },
   data() {
     return {
@@ -44,13 +44,13 @@ export default {
       drawer: null,
       showUpdate: false,
       showRating: false,
-      timer: null
+      timer: null,
     };
   },
   computed: {
     ...mapGetters([
       'getActiveTimer', 'getPlayChime', 'getChime', 'getTimerById',
-      'getTimerStatus', 'getTimerValue'
+      'getTimerStatus', 'getTimerValue',
     ]),
   },
   watch: {
@@ -62,7 +62,7 @@ export default {
     },
     getTimerValue(ms) {
       this.setTitle(ms);
-    }
+    },
   },
   created() {
     this.hydrate();
@@ -83,7 +83,7 @@ export default {
   methods: {
     ...mapActions([
       'hydrate', 'initTimer', 'startTimer',
-      'setTimerStatus', 'logEvent'
+      'setTimerStatus', 'logEvent',
     ]),
     setTitle(ms) {
       const mmt = moment(ms * 1000);
@@ -105,7 +105,7 @@ export default {
       /* istanbul ignore next */
       this.$native_notification.notify('DownTimer Notification', {
         body: 'This is where DownTimer notifications will appear.',
-        timeout: 4000
+        timeout: 4000,
       });
     },
     showCompletionNotification() {
@@ -140,8 +140,8 @@ export default {
       } else if (status === TIMER_STATUSES.PAUSED) {
         this.setDocumentTitle('DownTimer.io - Paused');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

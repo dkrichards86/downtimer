@@ -7,24 +7,24 @@ const X_AXES = [
   {
     type: 'time',
     time: {
-      unit: 'day'
-    }
-  }
+      unit: 'day',
+    },
+  },
 ];
 
 const Y_AXES = [
   {
-    display: false
-  }
+    display: false,
+  },
 ];
 
 const SCALES = {
   xAxes: X_AXES,
-  yAxes: Y_AXES
+  yAxes: Y_AXES,
 };
 
 const LEGEND = {
-  display: false
+  display: false,
 };
 
 const COMPLETED_COLOR = '#34495E';
@@ -36,8 +36,8 @@ export default {
   props: {
     stats: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   watch: {
     stats: {
@@ -45,8 +45,8 @@ export default {
         const { starts, completions } = this.setData();
         this.render(starts, completions);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   mounted() {
     const { starts, completions } = this.setData();
@@ -78,7 +78,7 @@ export default {
           backgroundColor: COMPLETED_COLOR,
           fill: false,
           pointStyle: 'line',
-          lineTension: 0
+          lineTension: 0,
         },
         {
           label: 'Time Scheduled',
@@ -87,8 +87,8 @@ export default {
           backgroundColor: SCHEDULED_COLOR,
           fill: false,
           pointStyle: 'line',
-          lineTension: 0
-        }
+          lineTension: 0,
+        },
       ];
 
       const datacollection = { datasets };
@@ -107,17 +107,17 @@ export default {
               }
 
               return `${prefix}: ${value}`;
-            }
-          }
+            },
+          },
         },
         legend: LEGEND,
         scales: SCALES,
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
       };
 
       this.renderChart(datacollection, options);
-    }
-  }
+    },
+  },
 };
 </script>

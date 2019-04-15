@@ -23,7 +23,7 @@ export default {
     timer: {
       type: Object,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
     },
     isActive() {
       return this.getActiveTimer === this.timer.uid;
-    }
+    },
   },
   watch: {
     timer(t) {
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setActiveTimer', 'resetTimer'
+      'setActiveTimer', 'resetTimer',
     ]),
     activateTimer() {
       if (this.$router.currentRoute.name === 'timer' && !this.isActive) {
@@ -74,7 +74,7 @@ export default {
       const mmt = moment(secs * 1000);
       this.minutes = mmt.minute();
       this.seconds = mmt.second();
-    }
+    },
   },
 };
 </script>

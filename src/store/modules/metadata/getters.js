@@ -1,3 +1,3 @@
 export const getters = {
-  getDeviceId: state => state.device_id
+  getDeviceId: state => state.device_id,
 };

@@ -24,23 +24,23 @@ const HEADERS = [
     text: 'Date', value: 'date', sortable: false,
   },
   {
-    text: 'Timers Started', value: 'starts', align: 'center'
+    text: 'Timers Started', value: 'starts', align: 'center',
   },
   {
-    text: 'Timers Completed', value: 'completions', align: 'center'
+    text: 'Timers Completed', value: 'completions', align: 'center',
   },
   {
-    text: '% Completed', value: 'percentage', align: 'center'
+    text: '% Completed', value: 'percentage', align: 'center',
   },
   {
-    text: '# Interruptions', value: 'interruptions', align: 'center'
-  }
+    text: '# Interruptions', value: 'interruptions', align: 'center',
+  },
 ];
 
 const PER_PAGE_MAP = {
   7: [7],
   14: [7, 14],
-  28: [7, 14, 28]
+  28: [7, 14, 28],
 };
 
 export default {
@@ -48,30 +48,30 @@ export default {
   props: {
     stats: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       items: [],
-      headers: HEADERS
+      headers: HEADERS,
     };
   },
   computed: {
     ...mapGetters([
-      'getStatsWindow'
+      'getStatsWindow',
     ]),
     perPage() {
       return PER_PAGE_MAP[this.getStatsWindow];
-    }
+    },
   },
   watch: {
     stats: {
       handler: function () {
         this.setData();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   mounted() {
     this.setData();
@@ -95,13 +95,13 @@ export default {
           starts: starts,
           completions: completions,
           percentage: percentage,
-          interruptions: data.interruptions
+          interruptions: data.interruptions,
         };
       });
     },
     timeFormat(secs) {
       return timeFormat(secs);
-    }
-  }
+    },
+  },
 };
 </script>

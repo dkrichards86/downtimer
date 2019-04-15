@@ -6,7 +6,7 @@ import notbad from '@/assets/sounds/not-bad.mp3';
 import silence from '@/assets/sounds/silence.mp3';
 
 const CHIMES = {
-  arpeggio, coins, definite, notbad, silence
+  arpeggio, coins, definite, notbad, silence,
 };
 
 const play = (chime) => {
@@ -17,12 +17,12 @@ const play = (chime) => {
 const AlertChime = {
   install: (Vue) => {
     Vue.alert_chime = {
-      play: play
+      play: play,
     };
     Vue.prototype.$alert_chime = {
-      play: play
+      play: play,
     };
-  }
+  },
 };
 
 export default AlertChime;

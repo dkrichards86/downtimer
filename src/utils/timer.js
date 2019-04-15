@@ -5,7 +5,7 @@ export const TIMER_STATUSES = {
   PAUSED: 0,
   PLAYING: 1,
   EXPIRED: 2,
-  RESET: 3
+  RESET: 3,
 };
 
 

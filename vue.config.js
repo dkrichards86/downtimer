@@ -2,13 +2,13 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: 8080,
-    disableHostCheck: true
+    disableHostCheck: true,
   },
   pwa: {
     workboxOptions: {
       skipWaiting: true,
-      clientsClaim: true
-    }
+      clientsClaim: true,
+    },
   },
   chainWebpack: config => {
     if (process.env.NODE_ENV !== 'production') {
@@ -24,5 +24,5 @@ module.exports = {
 
       config.devtool('inline-cheap-module-source-map');
     }
-  }
+  },
 };

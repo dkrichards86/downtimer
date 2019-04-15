@@ -42,13 +42,13 @@ export default {
   name: 'TimerControls',
   computed: {
     ...mapGetters([
-      'getTimerStatus'
-    ])
+      'getTimerStatus',
+    ]),
   },
   methods: {
     ...mapActions([
-      'startTimer', 'pauseTimer', 'resetTimer', 'resumeTimer'
-    ])
-  }
+      'startTimer', 'pauseTimer', 'resetTimer', 'resumeTimer',
+    ]),
+  },
 };
 </script>

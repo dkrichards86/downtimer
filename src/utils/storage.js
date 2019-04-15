@@ -14,7 +14,7 @@ if (!('localStorage' in window)) {
     },
     clear: () => {
       this._data = {};
-    }
+    },
   };
 }
 

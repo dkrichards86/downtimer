@@ -1,7 +1,7 @@
 import shortid from 'shortid';
 
 import {
-  SET_DEVICE_ID
+  SET_DEVICE_ID,
 } from './mutation_types';
 
 import { Storage } from '../../../utils/storage';
@@ -27,5 +27,5 @@ export const actions = {
     } else {
       store.dispatch('setDeviceId', shortid.generate());
     }
-  }
+  },
 };

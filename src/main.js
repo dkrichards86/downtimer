@@ -25,5 +25,5 @@ Vue.use(Vuetify, {
 new Vue({
   store,
   router,
-  render: h => h(Wrapper)
+  render: h => h(Wrapper),
 }).$mount('#app');

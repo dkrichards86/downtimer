@@ -48,26 +48,26 @@ const TRANSITIONS = {
   pause: ['resume', 'reset'],
   exit: [],
   reset: ['start'],
-  '': ['start']
+  '': ['start'],
 };
 
 export default {
   name: 'Statistics',
   components: {
     'statistics-chart': StatisticsChart,
-    'statistics-table': StatisticsTable
+    'statistics-table': StatisticsTable,
   },
   data() {
     return {
       runs: {},
       events: [],
       stats: {},
-      hasData: false
+      hasData: false,
     };
   },
   computed: {
     ...mapGetters([
-      'getTimerStatus', 'getStatsWindow'
+      'getTimerStatus', 'getStatsWindow',
     ]),
   },
   mounted() {
@@ -78,7 +78,7 @@ export default {
     getTimerStatus() {
       const { runs, events } = this.loadData();
       this.parseData(runs, events);
-    }
+    },
   },
   methods: {
     buildDataSkel() {
@@ -164,7 +164,7 @@ export default {
       });
 
       this.stats = statsData;
-    }
-  }
+    },
+  },
 };
 </script>

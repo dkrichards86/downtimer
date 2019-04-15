@@ -90,16 +90,16 @@ export default {
       minutes: 0,
       seconds: 0,
       titleError: null,
-      timerError: null
+      timerError: null,
     };
   },
   computed: {
     ...mapGetters([
-      'getTimerById'
+      'getTimerById',
     ]),
     formattedDuration() {
       return timeFormat((this.minutes * 60) + this.seconds);
-    }
+    },
   },
   watch: {
     '$route'(to) {
@@ -117,7 +117,7 @@ export default {
     },
     seconds(newVal) {
       this.validateTimer(this.minutes, newVal);
-    }
+    },
   },
   created() {
     const timerId = get(this.$route, 'params', null);
@@ -128,7 +128,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updateTimers', 'removeTimer', 'updateTimers'
+      'updateTimers', 'removeTimer', 'updateTimers',
     ]),
     closeDialog() {
       this.$router.push('/');
@@ -163,7 +163,7 @@ export default {
     setTimer(uid) {
       let duration = {
         title: 'New Timer',
-        duration: '1200'
+        duration: '1200',
       };
       this.headline = 'New Timer';
       this.isEdit = false;
@@ -184,7 +184,7 @@ export default {
       if (min === 0 && sec === 0) {
         this.timerError = 'The timer cannot be zero';
       }
-    }
-  }
+    },
+  },
 };
 </script>

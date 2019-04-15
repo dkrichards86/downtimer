@@ -8,7 +8,7 @@ const NativeNotification = {
   install: (Vue) => {
     Vue.native_notification = { notify, hasDefaultPermission };
     Vue.prototype.$native_notification = { notify, hasDefaultPermission };
-  }
+  },
 };
 
 

@@ -8,7 +8,7 @@ import {
   SET_TIMERS,
   SET_TIMER_STATUS,
   UPDATE_TIMER_VALUE,
-  SET_CURRENT_RUN_ID
+  SET_CURRENT_RUN_ID,
 } from './mutation_types';
 
 import { Storage } from '../../../utils/storage';
@@ -31,7 +31,7 @@ const logEvent = (runId, payload) => {
     const synced = false;
 
     const eventData = {
-      datetime, event, runId, synced
+      datetime, event, runId, synced,
     };
 
     allEvents.push(eventData);
@@ -96,7 +96,7 @@ export const actions = {
       const newDuration = {
         title: payload.title,
         duration: payload.duration,
-        uid: payload.uid
+        uid: payload.uid,
       };
       durations.push(newDuration);
     }
@@ -171,5 +171,5 @@ export const actions = {
 
     // moving timer status from expired to stopped removes the snackbar
     store.dispatch('setTimerStatus', TIMER_STATUSES.STOPPED);
-  }
+  },
 };

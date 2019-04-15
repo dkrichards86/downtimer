@@ -33,18 +33,18 @@ export default {
         { title: 'Arpeggio', chime: 'arpeggio' },
         { title: 'Coins', chime: 'coins' },
         { title: 'Definite', chime: 'definite' },
-        { title: 'Not bad', chime: 'notbad' }
+        { title: 'Not bad', chime: 'notbad' },
       ],
       windows: [
         { value: 7, text: 'Past Week' },
         { value: 14, text: 'Past 2 Weeks' },
-        { value: 28, text: 'Past 4 Weeks' }
-      ]
+        { value: 28, text: 'Past 4 Weeks' },
+      ],
     };
   },
   computed: {
     ...mapGetters([
-      'getChime', 'getPlayChime', 'getStatsWindow'
+      'getChime', 'getPlayChime', 'getStatsWindow',
     ]),
     playchime: {
       get() {
@@ -52,7 +52,7 @@ export default {
       },
       set(value) {
         this.setPlayChime(value);
-      }
+      },
     },
     chime: {
       get() {
@@ -61,7 +61,7 @@ export default {
       set(value) {
         this.$alert_chime.play(value);
         this.setChime(value);
-      }
+      },
     },
     timeWindow: {
       get() {
@@ -69,12 +69,12 @@ export default {
       },
       set(value) {
         this.setStatsWindow(value);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions([
-      'setChime', 'setPlayChime', 'setStatsWindow'
+      'setChime', 'setPlayChime', 'setStatsWindow',
     ]),
   },
 };

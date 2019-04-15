@@ -43,7 +43,7 @@ export const timeFormat = (secs) => {
 export const extractTimers = timers => timers.map(t => ({
   duration: t.duration,
   title: t.title,
-  uid: t.uid
+  uid: t.uid,
 }));
 
 /**

@@ -9,7 +9,7 @@ Vue.use(Vuex);
 const state = {
   chime: 'arpeggio',
   play_chime: false,
-  stats_window: 14
+  stats_window: 14,
 };
 
 export default {

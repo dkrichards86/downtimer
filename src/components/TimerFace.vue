@@ -24,15 +24,15 @@ export default {
     return {
       duration: {
         title: '',
-        duration: 0
+        duration: 0,
       },
       progress: 0,
-      countdown: 0
+      countdown: 0,
     };
   },
   computed: {
     ...mapGetters([
-      'getActiveTimer', 'getTimerById', 'getTimerValue'
+      'getActiveTimer', 'getTimerById', 'getTimerValue',
     ]),
     formattedDuration() {
       return timeFormat(this.countdown);
@@ -44,7 +44,7 @@ export default {
     },
     getTimerValue(newTime) {
       this.changeTimerValue(newTime);
-    }
+    },
   },
   created() {
     const duration = this.getTimerById(this.getActiveTimer);
@@ -71,8 +71,8 @@ export default {
     },
     setCountdown(countdown) {
       this.countdown = countdown;
-    }
-  }
+    },
+  },
 };
 </script>
 

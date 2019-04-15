@@ -12,7 +12,7 @@ Vue.use(Vuex);
 const DEFAULT_TIMER = {
   title: '20 minutes',
   duration: 1200,
-  uid: shortid.generate()
+  uid: shortid.generate(),
 };
 
 const state = {
@@ -20,7 +20,7 @@ const state = {
   timers: [DEFAULT_TIMER],
   timer_status: TIMER_STATUSES.STOPPED,
   timer_value: DEFAULT_TIMER.duration,
-  current_run_id: null
+  current_run_id: null,
 };
 
 export default {

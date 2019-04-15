@@ -7,5 +7,5 @@ Vue.use(Router);
 export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   base: process.env.BASE_URL,
-  routes
+  routes,
 });

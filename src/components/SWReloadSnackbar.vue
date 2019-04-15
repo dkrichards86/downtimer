@@ -14,7 +14,7 @@ export default {
     refresh() {
       /* istanbul ignore next */
       window.location.reload();
-    }
-  }
+    },
+  },
 };
 </script>

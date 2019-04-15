@@ -1,7 +1,7 @@
 import {
   SET_PLAY_CHIME,
   SET_CHIME,
-  SET_STATS_WINDOW
+  SET_STATS_WINDOW,
 } from './mutation_types';
 
 import { Storage } from '../../../utils/storage';
@@ -40,5 +40,5 @@ export const actions = {
         store.commit(SET_STATS_WINDOW, settings.stats_window);
       }
     }
-  }
+  },
 };
